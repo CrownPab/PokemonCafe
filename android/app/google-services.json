@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "925618890356",
+    "project_id": "pokemoncafe-13440",
+    "storage_bucket": "pokemoncafe-13440.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:925618890356:android:a1ea6c27037ccbc228d321",
+        "android_client_info": {
+          "package_name": "com.example.pokemon_cafe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "925618890356-ljrs410fl6mp7fevefef5hue9mj59chr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXh0i_yv4p19AJKXVq_I5DuLpPlseqXvI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "925618890356-ljrs410fl6mp7fevefef5hue9mj59chr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
