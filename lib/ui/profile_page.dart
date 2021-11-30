@@ -16,56 +16,78 @@ class ProfilePage extends StatelessWidget {
             )
           ]),
           title: const Text('Profile Page'),
-          actions: [
-            CircleAvatar(
-              backgroundImage: NetworkImage(
-                  'https://pbs.twimg.com/profile_images/1465367903981772816/9RTbOQY2_400x400.jpg'),
-            )
-          ],
         ),
         body: TabBarView(
           children: [
             Column(
               children: [
                 Container(
-                  child: Center(
-                    child: Column(
-                      children: [
-                        Image(
-                          image: NetworkImage(
-                              'https://pbs.twimg.com/media/FFJEaJEVgAU9E56?format=jpg&name=900x900'),
-                          height: 300,
-                          width: 300,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: [
-                              Text("12", 
-                              style: TextStyle(
-                              color: Colors.black,
-                              )
-                              ,),
-                              SizedBox(
-                                width: 12.0,
-                              ),
-                              SizedBox(
-                                height: 25.0,
-                                width: 325.0,
-                                child: LinearProgressIndicator(
-                                  value: 0.3,
-                                  valueColor:
-                                      AlwaysStoppedAnimation(Colors.blue),
-                                ),
-                              ),
-                            ],
+                    child: Center(
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(
+                              height: 250,
+                              width: 250,
+                              child: Stack(
+                                  clipBehavior: Clip.none,
+                                  fit: StackFit.expand,
+                                  children: [
+                                    const CircleAvatar(
+                                      radius: 140.0,
+                                      backgroundImage: NetworkImage(
+                                          'https://pbs.twimg.com/profile_images/1465367903981772816/9RTbOQY2_400x400.jpg'),
+                                    ),
+                                    Positioned(
+                                      bottom: 0,
+                                      right: -15,
+                                      height: 100,
+                                      width: 100,
+                                      child: RaisedButton(
+                                        onPressed: () {},
+                                        elevation: 2.0,
+                                        color: Colors.white,
+                                        shape: CircleBorder(),
+                                        padding: EdgeInsets.all(8.0),
+                                        child: const Image(
+                                          image: AssetImage(
+                                              'assets/images/charmander.gif'),
+                                        ),
+                                      ),
+                                    ),
+                                  ]),
+                            ),
                           ),
-                        )
-                      ],
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: const [
+                                Text(
+                                  "12",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 12.0,
+                                ),
+                                SizedBox(
+                                  height: 25.0,
+                                  width: 325.0,
+                                  child: LinearProgressIndicator(
+                                    value: 0.3,
+                                    valueColor:
+                                        AlwaysStoppedAnimation(Colors.blue),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                  color: Colors.lightBlue[100]
-                ),
+                    color: Colors.lightBlue[100]),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -79,7 +101,7 @@ class ProfilePage extends StatelessWidget {
                             fontFamily: 'Open Sans',
                             fontSize: 20),
                       ),
-                      SizedBox(height: 12.0),
+                      const SizedBox(height: 12.0),
                       Text(
                         "Preferred Store: 1365 Wilson Rd N",
                         style: TextStyle(
@@ -89,7 +111,7 @@ class ProfilePage extends StatelessWidget {
                             fontFamily: 'Open Sans',
                             fontSize: 20),
                       ),
-                      SizedBox(height: 12.0),
+                      const SizedBox(height: 12.0),
                       Text(
                         "Favourite Item: Pokechino",
                         style: TextStyle(
@@ -99,7 +121,7 @@ class ProfilePage extends StatelessWidget {
                             fontFamily: 'Open Sans',
                             fontSize: 20),
                       ),
-                      SizedBox(height: 12.0),
+                      const SizedBox(height: 12.0),
                       Text(
                         "Birthday: May 10th 1999",
                         style: TextStyle(
@@ -109,7 +131,7 @@ class ProfilePage extends StatelessWidget {
                             fontFamily: 'Open Sans',
                             fontSize: 20),
                       ),
-                      SizedBox(height: 12.0),
+                      const SizedBox(height: 12.0),
                       Text(
                         "Gender: Male",
                         style: TextStyle(
@@ -119,7 +141,7 @@ class ProfilePage extends StatelessWidget {
                             fontFamily: 'Open Sans',
                             fontSize: 20),
                       ),
-                      SizedBox(height: 12.0),
+                      const SizedBox(height: 12.0),
                       Text(
                         "Email: GaganPabla377@gmail.com",
                         style: TextStyle(
@@ -131,14 +153,16 @@ class ProfilePage extends StatelessWidget {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: ElevatedButton(onPressed: () {}, child: const Text('Change Password')),
+                        child: ElevatedButton(
+                            onPressed: () {},
+                            child: const Text('Change Password')),
                       )
                     ],
                   ),
                 )
               ],
             ),
-            Icon(Icons.directions_ferry_outlined)
+            const Icon(Icons.directions_ferry_outlined)
           ],
         ),
         backgroundColor: Colors.lightBlue[200],
