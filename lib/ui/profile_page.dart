@@ -5,6 +5,9 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Temporary List for Badges
+    final List<Map> myProducts = List.generate(
+        100000, (index) => {"id": index, "name": "Product $index"}).toList();
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -162,7 +165,24 @@ class ProfilePage extends StatelessWidget {
                 )
               ],
             ),
-            const Icon(Icons.directions_ferry_outlined)
+            GridView.builder(
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 200,
+                    childAspectRatio: 3 / 2,
+                    crossAxisSpacing: 20,
+                    mainAxisSpacing: 20),
+                itemCount: myProducts.length,
+                itemBuilder: (BuildContext ctx, index) {
+                  return Container(
+                    alignment: Alignment.center,
+                    child: const Image(
+                      image: AssetImage('assets/images/Boulderbadge.webp'),
+                    ),
+                    decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(15)),
+                  );
+                }),
           ],
         ),
         backgroundColor: Colors.lightBlue[200],
