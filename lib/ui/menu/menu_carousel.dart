@@ -33,7 +33,10 @@ class _MenuCarousel extends State<MenuCarousel> {
                 scrollDirection: Axis.horizontal,
                 shrinkWrap: true,
                 children: widget.menuItems
-                    .map((e) => MenuItemThumbnail(item: e))
+                    .map((e) => MenuItemThumbnail(
+                          item: e,
+                          collectionName: widget.carouselName,
+                        ))
                     .toList(),
               ))),
           const Divider(),
