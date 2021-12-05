@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pokemon_cafe/auth.dart';
-<<<<<<< HEAD
 import 'package:pokemon_cafe/ui/home_page.dart';
 import 'package:pokemon_cafe/ui/login_page.dart';
 import 'package:pokemon_cafe/view_model.dart';
@@ -13,18 +12,10 @@ enum AuthStatus {
 }
 
 class LoginDelegate extends StatefulWidget {
-=======
-
-class LoginDelegate extends StatefulWidget {
-  final Auth auth;
-  LoginDelegate({Key? key, required this.auth}) : super(key: key);
-
->>>>>>> ab3bd46cf862de1a24f1a7487ec60079b8c0a2be
   _LoginDelegate createState() => _LoginDelegate();
 }
 
 class _LoginDelegate extends State<LoginDelegate> {
-<<<<<<< HEAD
   AuthStatus authStatus = AuthStatus.NOT_DETERMINED;
 
   void _signedIn() {
@@ -81,11 +72,5 @@ class _LoginDelegate extends State<LoginDelegate> {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<ViewModel>(
         builder: (context, child, model) => CheckAuth(model));
-=======
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
->>>>>>> ab3bd46cf862de1a24f1a7487ec60079b8c0a2be
   }
 }
