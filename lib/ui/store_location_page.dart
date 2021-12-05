@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:bottom_drawer/bottom_drawer.dart';
 import 'package:flutter_map/plugin_api.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:pokemon_cafe/locations.dart' as locations;
 
 class StoreSelectionPage extends StatelessWidget {
   @override
@@ -23,10 +25,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Location> latLonList = [];
-
-  String address = '';
-  String name = '';
+  List<Location> latLonList = [
+    Location("5954 Hwy 7", "Emerald City", LatLng(43.8739833, -79.337021)),
+    Location("600 Highway 7", "Saffron City", LatLng(43.845703125, -79.38105010986328)),
+    Location("3740 Midland Ave", "Lavender Town", LatLng(43.816033, -79.293668)),
+    Location("209 Victoria St", "Vermilion City", LatLng(43.654884338378906, -79.37899780273438)),
+    Location("1365 Wilson Rd N", "Pewter City", LatLng(43.939078,-78.8598354))
+  ];
 
   Future<Position> getCurrentLocation() async {
     LocationPermission permission;
@@ -39,47 +44,35 @@ class _MyHomePageState extends State<MyHomePage> {
         desiredAccuracy: LocationAccuracy.best);
   }
 
-  getAddress(double latitude, double longitude) async {
-    List<Placemark> places =
-        await placemarkFromCoordinates(latitude, longitude);
-    address =
-        "${places.first.street}, ${places.first.locality}, ${places.first.postalCode}, ${places.first.country}";
-    name = "${places.first.name}";
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("Select a store")),
-        body: ScaffoldBodyContent(latLonList),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            var position = await getCurrentLocation();
-            setState(() {
-              latLonList.add(Location(address, name,
-                  LatLng(position.latitude, position.longitude)));
-
-              getAddress(position.latitude, position.longitude);
-
-              print(position);
-              print(address);
-            });
-          },
-          child: Icon(Icons.add),
-        ));
+      appBar: AppBar(title: const Text("Select a store")),
+      body: ScaffoldBodyContent(latLonList),
+      /*
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          setState(() {});
+        },
+        child: Icon(Icons.add),
+      ),
+      */
+    );
   }
 }
 
 class Location {
   String? address;
-  String? name;
+  String? city;
   LatLng? latLong;
 
-  Location(this.address, this.name, this.latLong);
+  Location(this.address, this.city, this.latLong);
 }
 
 class ScaffoldBodyContent extends StatelessWidget {
   List<Location> latLonList;
+  static const IconData catching_pokemon_sharp =
+      IconData(0xe844, fontFamily: 'MaterialIcons');
 
   ScaffoldBodyContent(this.latLonList);
 
@@ -93,8 +86,32 @@ class ScaffoldBodyContent extends StatelessWidget {
             return IconButton(
               onPressed: () {
                 print("PIN CLICKED!");
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Container(
+                      height: 50,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(list[i].address.toString(), style: TextStyle(fontSize: 18),),
+                          Text(list[i].city.toString()),
+                        ],
+                      )),
+                  duration: const Duration(days: 1),
+                  backgroundColor: Colors.red,
+                  action: SnackBarAction(
+                    label: 'Hide',
+                    onPressed: () {
+                      print('Action is clicked');
+                    },
+                    textColor: Colors.white,
+                    disabledTextColor: Colors.grey,
+                  ),
+                ));
               },
-              icon: Icon(Icons.circle),
+              icon: const Icon(catching_pokemon_sharp,
+                  size: 25.0, color: Colors.red),
               iconSize: 20.0,
               color: Colors.blueAccent,
             );
@@ -112,12 +129,12 @@ class ScaffoldBodyContent extends StatelessWidget {
     return points;
   }
 
-  final center = LatLng(43.899550, -79.239590);
+  final center = LatLng(43.856098, -79.337021);
 
   @override
   Widget build(BuildContext context) {
     return FlutterMap(
-      options: MapOptions(zoom: 16.0, minZoom: 1, maxZoom: 200, center: center),
+      options: MapOptions(zoom: 12.0, minZoom: 1, maxZoom: 200, center: center),
       layers: [
         TileLayerOptions(
             urlTemplate:
@@ -130,12 +147,6 @@ class ScaffoldBodyContent extends StatelessWidget {
         MarkerLayerOptions(
           markers: markerList(latLonList),
         ),
-        PolylineLayerOptions(polylines: [
-          Polyline(
-              color: Colors.blueAccent,
-              strokeWidth: 3.0,
-              points: pointsList(latLonList)),
-        ]),
       ],
     );
   }
