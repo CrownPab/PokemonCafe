@@ -94,9 +94,6 @@ class ViewModel extends Model {
     if (auth != null) {
       Account? account =
           await crud.getAccount(auth!.uid ?? "E09hPBjLbidu4gHF4KxH");
-      if (account == null) {
-        onSignOut!();
-      }
       currentAccount = account;
       return account;
     } else {
@@ -104,11 +101,9 @@ class ViewModel extends Model {
     }
   }
 
-  Future<Account?> createAccount(String uid, String email) async {
-    Account? account = await crud.createAccount(uid, email);
-    if (account != null) {
-      currentAccount = account;
-    }
+  Future<Account?> createAccount(Account account) async {
+    await crud.createAccount(account);
+    currentAccount = account;
     return account;
   }
 }

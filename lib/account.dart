@@ -54,7 +54,7 @@ class Account {
   factory Account.NewAccount(String id, String email) {
     return Account(
         id: id,
-        birthday: '',
+        birthday: '01-01-2021',
         currentXpAmount: 0,
         email: email,
         favDrink: '',
@@ -66,13 +66,14 @@ class Account {
         preferredStore: '',
         userName: '',
         profileImageUrl: '',
-        badges:
-            Map.fromIterable(['values'], key: (e) => e, value: (e) => false));
+        badges: Map.fromIterable(
+            ['BoulderBadge', 'EarthBadge', 'ThunderBadge', 'VolcanoBadge'],
+            key: (e) => e, value: (e) => false));
   }
   factory Account.fromMap(String id, Map<String, dynamic> map) {
     return Account(
         id: id,
-        birthday: map['Birthday'],
+        birthday: map['birthday'],
         currentXpAmount: map['CurrentXpAmount'],
         email: map['Email'],
         favDrink: map['FavDrink'],

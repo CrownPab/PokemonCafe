@@ -11,6 +11,7 @@ Future initializeFirebase() async {
 }
 
 Future<Account?> getAccount(String id) async {
+  print(id);
   DocumentSnapshot accountQuery = await _mainCollection.doc(id).get();
   if (accountQuery.exists) {
     return Account.fromMap(id, accountQuery.data() as Map<String, dynamic>);
@@ -19,9 +20,8 @@ Future<Account?> getAccount(String id) async {
   }
 }
 
-Future<Account?> createAccount(String uid, String email) async {
-  Account account = Account.NewAccount(uid, email);
+Future<bool> createAccount(Account account) async {
   print(account.mapTo());
-  await _mainCollection.doc(uid).set(account.mapTo());
-  return account;
+  await _mainCollection.doc(account.id).set(account.mapTo());
+  return true;
 }

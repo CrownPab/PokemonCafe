@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pokemon_cafe/account.dart';
 import 'package:pokemon_cafe/auth.dart';
+import 'package:pokemon_cafe/ui/signup_page.dart';
 import 'package:pokemon_cafe/view_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -48,7 +50,9 @@ class _LoginPage extends State<LoginPage> {
           print('Signed in: $userId');
         } else {
           String userId = await widget.auth.signUp(_email, _password);
-          model.createAccount(userId, _email);
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) =>
+                  SignUpPage(account: Account.NewAccount(userId, _email))));
           print('Signed up user: $userId');
         }
         widget.onSignedIn();
