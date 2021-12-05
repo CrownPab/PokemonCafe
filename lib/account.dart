@@ -2,71 +2,88 @@ import 'package:flutter/material.dart';
 import 'auth.dart';
 
 class Account {
-  static const ProgressTypes = ['Task', 'Deadline', 'Time'];
-  static const SortingTypes = ['Date Created', 'Deadline', 'Duration'];
   String id;
-  bool swapActivationSide;
-  String profileImageURL;
-  String name;
+  String birthday;
+  int currentXpAmount;
   String email;
-  bool darkTheme;
-  late Image profileImage;
-  String progressType, sortingType;
-  List<String> joinedProjects = [];
+  String favDrink;
+  String favFood; 
+  String firstName;
+  String lastName;
+  String password;
+  int pokemonLevel;
+  String preferredStore;
+  String userName;
+  String profileImageUrl;
+  Map<String,dynamic> badges;
+
   Account(
       {required this.id,
-      required this.profileImageURL,
-      required this.name,
+      required this.birthday,
+      required this.currentXpAmount,
       required this.email,
-      required this.swapActivationSide,
-      required this.joinedProjects,
-      required this.sortingType,
-      required this.progressType,
-      required this.darkTheme});
+      required this.favDrink,
+      required this.favFood,
+      required this.firstName,
+      required this.lastName,
+      required this.password,
+      required this.pokemonLevel,
+      required this.preferredStore,
+      required this.userName,
+      required this.profileImageUrl,
+      required this.badges});
 
   Map<String, dynamic> mapTo({required Auth auth}) {
     var dataMap = new Map<String, dynamic>();
-    dataMap['name'] = this.name;
-    //dataMap['profileImageURL'] = this.profileImageURL;
-    dataMap['email'] = (auth != null) ? auth.email : this.email;
-    dataMap['joinedProjects'] = this.joinedProjects;
-    dataMap['progressType'] = this.progressType;
-    dataMap['darkTheme'] = this.darkTheme;
-    dataMap['sortingType'] = this.sortingType;
-    dataMap['swapActivationSide'] = this.swapActivationSide;
+    dataMap['birthday'] = this.birthday;
+    dataMap['CurrentXpAmount'] = this.currentXpAmount;
+    dataMap['Email'] = this.email;
+    dataMap['FavDrink'] = this.favDrink;
+    dataMap['FavFood'] = this.favFood;
+    dataMap['FirstName'] = this.firstName;
+    dataMap['LastName'] = this.lastName;
+    dataMap['Password'] = this.password;
+    dataMap['PokemonLevel'] = this.pokemonLevel;
+    dataMap['PreferredStore'] = this.preferredStore;
+    dataMap['UserName'] = this.userName;
+    dataMap['profileImageURL'] = this.profileImageUrl;
+    dataMap['Badges'] = this.badges;
     return dataMap;
   }
 
   factory Account.NewAccount(String id, String email) {
     return Account(
-      id: id,
-      profileImageURL: '',
-      email: email,
-      darkTheme: false,
-      progressType: 'Time',
-      sortingType: SortingTypes[0],
-      joinedProjects: [],
-      name: 'Untitled',
-      swapActivationSide: false,
+       id: id,
+        birthday: '',
+        currentXpAmount: 0,
+        email: email,
+        favDrink: '',
+        favFood: '',
+        firstName: '',
+        lastName: '', 
+        password: '',
+        pokemonLevel: 1,
+        preferredStore: '',
+        userName: '',
+        profileImageUrl: '',
+        badges: Map.fromIterable(['values'], key: (e) => e, value: (e) => false)
     );
   }
   factory Account.fromMap(String id, Map<String, dynamic> map) {
     return Account(
         id: id,
-        profileImageURL: map['profileImageURL'],
-        name: map['UserName'],
+        birthday: map['Birthday'],
+        currentXpAmount: map['CurrentXpAmount'],
         email: map['Email'],
-        darkTheme: (map.containsKey('darkTheme')) ? map['darkTheme'] : false,
-        joinedProjects: (map.containsKey('joinedProjects'))
-            ? map['joinedProjects'].cast<String>()
-            : [],
-        progressType:
-            (map.containsKey('progressType')) ? map['progressType'] : 'Task',
-        sortingType: (map.containsKey('sortingType'))
-            ? map['sortingType']
-            : SortingTypes[0],
-        swapActivationSide: (map.containsKey('swapActivationSide'))
-            ? map['swapActivationSide']
-            : false);
+        favDrink: map['FavDrink'],
+        favFood: map['FavFood'],
+        firstName: map['FirstName'],
+        lastName: map['LastName'], 
+        password: map['Password'],
+        pokemonLevel: map['PokemonLevel'],
+        preferredStore: map['PreferredStore'],
+        userName: map['UserName'],
+        profileImageUrl: map['profileImageURL'],
+        badges: (map.containsKey('Badges')) ? map['Badges'] : false); 
   }
 }

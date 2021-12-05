@@ -128,7 +128,7 @@ class _ProfilePage extends State<ProfilePage> {
                                 child: Column(
                                   children: [
                                     Text(
-                                      "UserName: ",
+                                      "UserName: ${account!.userName}",
                                       style: TextStyle(
                                           color: Colors.grey[800],
                                           fontWeight: FontWeight.w900,
