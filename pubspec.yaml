@@ -39,6 +39,7 @@ dependencies:
   geocoding:
   latlng:
   flutter_map:
+  bottom_drawer: ^0.0.3
 
 dev_dependencies:
   flutter_test:
