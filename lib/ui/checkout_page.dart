@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokemon_cafe/data/menu_item.dart';
+import 'package:pokemon_cafe/ui/shared/xp_text.dart';
 import 'package:pokemon_cafe/view_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -303,9 +304,17 @@ class _CheckoutPage extends State<CheckoutPage> {
                     children: <Widget>[
                       Image.asset(model.cart[index].image,
                           width: 55, height: 55, fit: BoxFit.fitHeight),
-                      Text(model.cart[index].name,
-                          style: CustomTextStyle.textStyleRegular
-                              .copyWith(fontSize: 14)),
+                      Column(
+                        children: <Widget>[
+                          Text(model.cart[index].name,
+                              style: CustomTextStyle.textStyleSemiBold
+                                  .copyWith(fontSize: 14)),
+                          const SizedBox(
+                            height: 4,
+                          ),
+                          XPText(xp: model.cart[index].xp, fontSize: 12),
+                        ],
+                      ),
                       const SizedBox(
                         width: 8,
                       ),
@@ -339,6 +348,7 @@ class _CheckoutPage extends State<CheckoutPage> {
     double subTotal = cart.map((i) => i.price).toList().reduce((a, b) => a + b);
     double hst = subTotal * 0.13;
     double total = subTotal + hst;
+    int xpEarned = cart.map((i) => i.xp).toList().reduce((a, b) => a + b);
 
     return Container(
       margin: const EdgeInsets.all(4),
@@ -371,6 +381,16 @@ class _CheckoutPage extends State<CheckoutPage> {
               ),
               const SizedBox(
                 height: 8,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "XP Earned",
+                    style: CustomTextStyle.textStyleRegular,
+                  ),
+                  XPText(xp: xpEarned, fontSize: 12)
+                ],
               ),
               createPriceItem("Subtotal", "\$$subTotal"),
               createPriceItem("HST", "\$$hst"),
