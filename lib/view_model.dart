@@ -79,6 +79,6 @@ class ViewModel extends Model {
   }
 
   Future<Account?> getAccount() async {
-    return await crud.getAccount(id ?? "E09hPBjLbidu4gHF4KxH");
+    return await crud.getAccount("E09hPBjLbidu4gHF4KxH");
   }
 }
