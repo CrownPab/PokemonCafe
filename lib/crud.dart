@@ -18,3 +18,10 @@ Future<Account?> getAccount(String id) async {
     print('could not find document');
   }
 }
+
+Future<Account?> createAccount(String uid, String email) async {
+  Account account = Account.NewAccount(uid, email);
+  print(account.mapTo());
+  await _mainCollection.doc(uid).set(account.mapTo());
+  return account;
+}
