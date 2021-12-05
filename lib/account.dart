@@ -7,7 +7,7 @@ class Account {
   int currentXpAmount;
   String email;
   String favDrink;
-  String favFood; 
+  String favFood;
   String firstName;
   String lastName;
   String password;
@@ -15,7 +15,7 @@ class Account {
   String preferredStore;
   String userName;
   String profileImageUrl;
-  Map<String,dynamic> badges;
+  Map<String, dynamic> badges;
 
   Account(
       {required this.id,
@@ -33,8 +33,8 @@ class Account {
       required this.profileImageUrl,
       required this.badges});
 
-  Map<String, dynamic> mapTo({required Auth auth}) {
-    var dataMap = new Map<String, dynamic>();
+  Map<String, dynamic> mapTo() {
+    var dataMap = Map<String, dynamic>();
     dataMap['birthday'] = this.birthday;
     dataMap['CurrentXpAmount'] = this.currentXpAmount;
     dataMap['Email'] = this.email;
@@ -53,37 +53,38 @@ class Account {
 
   factory Account.NewAccount(String id, String email) {
     return Account(
-       id: id,
-        birthday: '',
+        id: id,
+        birthday: '01-01-2021',
         currentXpAmount: 0,
         email: email,
         favDrink: '',
         favFood: '',
         firstName: '',
-        lastName: '', 
+        lastName: '',
         password: '',
         pokemonLevel: 1,
         preferredStore: '',
         userName: '',
         profileImageUrl: '',
-        badges: Map.fromIterable(['values'], key: (e) => e, value: (e) => false)
-    );
+        badges: Map.fromIterable(
+            ['BoulderBadge', 'EarthBadge', 'ThunderBadge', 'VolcanoBadge'],
+            key: (e) => e, value: (e) => false));
   }
   factory Account.fromMap(String id, Map<String, dynamic> map) {
     return Account(
         id: id,
-        birthday: map['Birthday'],
+        birthday: map['birthday'],
         currentXpAmount: map['CurrentXpAmount'],
         email: map['Email'],
         favDrink: map['FavDrink'],
         favFood: map['FavFood'],
         firstName: map['FirstName'],
-        lastName: map['LastName'], 
+        lastName: map['LastName'],
         password: map['Password'],
         pokemonLevel: map['PokemonLevel'],
         preferredStore: map['PreferredStore'],
         userName: map['UserName'],
         profileImageUrl: map['profileImageURL'],
-        badges: (map.containsKey('Badges')) ? map['Badges'] : false); 
+        badges: (map.containsKey('Badges')) ? map['Badges'] : false);
   }
 }
