@@ -72,7 +72,7 @@ class _ProductPage extends State<ProductPage> {
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 30),
                   ),
-                  XPText(widget.menuItem.xp),
+                  XPText(xp: widget.menuItem.xp),
                 ])),
         Container(
             padding:

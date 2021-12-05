@@ -12,14 +12,28 @@ class MenuPage extends StatefulWidget {
 
 class _MenuPage extends State<MenuPage> {
   Map<String, List<MenuItem>>? menuSelection;
+  double scrollDepth = 0;
+
   Widget _menuLoader(ViewModel model) {
     if (menuSelection != null) {
-      return ListView(
-        shrinkWrap: true,
-        children: menuSelection!.entries
-            .map((e) => MenuCarousel(menuItems: e.value, carouselName: e.key))
-            .toList(),
-      );
+      return Expanded(
+          child: NotificationListener<ScrollUpdateNotification>(
+        child: ListView(
+          shrinkWrap: true,
+          children: menuSelection!.entries
+              .map((e) => MenuCarousel(menuItems: e.value, carouselName: e.key))
+              .toList(),
+        ),
+        onNotification: (notification) {
+          setState(() {
+            if (notification.scrollDelta != null &&
+                notification.metrics.axis == Axis.vertical) {
+              scrollDepth += notification.scrollDelta!;
+            }
+          });
+          return true;
+        },
+      ));
     } else {
       model
           .getAllMenuItems()
@@ -34,7 +48,13 @@ class _MenuPage extends State<MenuPage> {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<ViewModel>(
         builder: (context, child, model) => Column(
-              children: [SearchBar(), ProfileCard(), _menuLoader(model)],
+              children: [
+                SearchBar(),
+                ProfileCard(
+                  scrollDepth: scrollDepth,
+                ),
+                _menuLoader(model)
+              ],
             ));
   }
 }

@@ -18,6 +18,7 @@ class _MenuCarousel extends State<MenuCarousel> {
       padding: const EdgeInsets.only(left: 10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Text(widget.carouselName,
               textAlign: TextAlign.left,
@@ -28,17 +29,17 @@ class _MenuCarousel extends State<MenuCarousel> {
           const Divider(),
           SizedBox(
               height: 130,
-              child: Expanded(
-                  child: ListView(
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                children: widget.menuItems
-                    .map((e) => MenuItemThumbnail(
-                          item: e,
-                          collectionName: widget.carouselName,
-                        ))
-                    .toList(),
-              ))),
+              child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    //shrinkWrap: true,
+                    children: widget.menuItems
+                        .map((e) => MenuItemThumbnail(
+                              item: e,
+                              collectionName: widget.carouselName,
+                            ))
+                        .toList(),
+                  ))),
           const Divider(),
         ],
       ),
