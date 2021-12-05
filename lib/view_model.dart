@@ -1,5 +1,7 @@
+import 'package:pokemon_cafe/account.dart';
 import 'package:pokemon_cafe/data/menu_item.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:pokemon_cafe/crud.dart' as crud;
 
 class ViewModel extends Model {
   final Map<String, MenuItem> _allItems = {
@@ -74,5 +76,9 @@ class ViewModel extends Model {
       ],
       'Cold Drinks': <MenuItem>[_allItems['000004']!, _allItems['000005']!]
     };
+  }
+
+  Future<Account?> getAccount() async {
+    return await crud.getAccount(id ?? "E09hPBjLbidu4gHF4KxH");
   }
 }
