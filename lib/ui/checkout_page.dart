@@ -33,8 +33,8 @@ class _CheckoutPage extends State<CheckoutPage> {
                     pickupStoreSection(),
                     pickupOptionsSection(),
                     prepTimeSection(),
-                    checkoutItemSection(model.cart),
-                    priceSection()
+                    checkoutItemSection(model),
+                    priceSection(model.cart)
                   ],
                 ),
                 flex: 90,
@@ -277,7 +277,7 @@ class _CheckoutPage extends State<CheckoutPage> {
     );
   }
 
-  checkoutItemSection(List<MenuItem> cart) {
+  checkoutItemSection(ViewModel model) {
     return Container(
       margin: const EdgeInsets.all(4),
       child: Card(
@@ -291,10 +291,43 @@ class _CheckoutPage extends State<CheckoutPage> {
           padding:
               const EdgeInsets.only(left: 12, top: 8, right: 12, bottom: 8),
           child: ListView.builder(
-            itemBuilder: (context, position) {
-              return checkoutListItem();
+            itemBuilder: (BuildContext context, int index) {
+              return Card(
+                  child: Column(
+                children: <Widget>[
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Image.asset(model.cart[index].image,
+                          width: 55, height: 55, fit: BoxFit.fitHeight),
+                      Text(model.cart[index].name,
+                          style: CustomTextStyle.textStyleRegular
+                              .copyWith(fontSize: 14)),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        "\$${model.cart[index].price}",
+                        style: CustomTextStyle.textStyleRegular
+                            .copyWith(fontSize: 14),
+                      ),
+                      const SizedBox(
+                        width: 4,
+                      ),
+                      IconButton(
+                          onPressed: () {
+                            model.deletefromCard(model.cart[index]);
+                          },
+                          icon: const Icon(Icons.delete))
+                    ],
+                  )
+                ],
+              ));
             },
-            itemCount: cart.length,
+            itemCount: model.cart.length,
             shrinkWrap: true,
           ),
         ),
@@ -302,41 +335,11 @@ class _CheckoutPage extends State<CheckoutPage> {
     );
   }
 
-  checkoutListItem() {
-    return Card(
-      child: Column(
-        children: <Widget>[
-          const SizedBox(
-            height: 4,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              const Image(
-                image: NetworkImage(
-                    'https://globalassets.starbucks.com/assets/ca435e1035e04487b6e2fa872a1f8ba7.jpg?impolicy=1by1_wide_topcrop_630'),
-                width: 45,
-                height: 55,
-                fit: BoxFit.fitHeight,
-              ),
-              Text("Peppermint Mocha",
-                  style:
-                      CustomTextStyle.textStyleRegular.copyWith(fontSize: 14)),
-              const SizedBox(
-                width: 8,
-              ),
-              Text(
-                r'$4.50',
-                style: CustomTextStyle.textStyleRegular.copyWith(fontSize: 14),
-              )
-            ],
-          )
-        ],
-      ),
-    );
-  }
+  priceSection(List<MenuItem> cart) {
+    double subTotal = cart.map((i) => i.price).toList().reduce((a, b) => a + b);
+    double hst = subTotal * 0.13;
+    double total = subTotal + hst;
 
-  priceSection() {
     return Container(
       margin: const EdgeInsets.all(4),
       child: Card(
@@ -369,8 +372,8 @@ class _CheckoutPage extends State<CheckoutPage> {
               const SizedBox(
                 height: 8,
               ),
-              createPriceItem("Subtotal", r'$12.05'),
-              createPriceItem("HST", r'$1.57'),
+              createPriceItem("Subtotal", "\$$subTotal"),
+              createPriceItem("HST", "\$$hst"),
               const SizedBox(
                 height: 8,
               ),
@@ -382,7 +385,7 @@ class _CheckoutPage extends State<CheckoutPage> {
                     style: CustomTextStyle.textStyleBold.copyWith(fontSize: 14),
                   ),
                   Text(
-                    r'$13.62',
+                    "\$$total",
                     style: CustomTextStyle.textStyleBold.copyWith(fontSize: 14),
                   )
                 ],

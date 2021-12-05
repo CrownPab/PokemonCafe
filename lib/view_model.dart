@@ -91,4 +91,8 @@ class ViewModel extends Model {
   void addToCard(MenuItem item) {
     cart.add(item);
   }
+
+  void deletefromCard(MenuItem item) {
+    cart.remove(item);
+  }
 }
