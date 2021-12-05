@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pokemon_cafe/data/menu_item.dart';
+import 'package:pokemon_cafe/ui/product/amount_selector.dart';
+import 'package:pokemon_cafe/ui/product/notes_field.dart';
 import 'package:pokemon_cafe/ui/product/size_selector.dart';
+import 'package:pokemon_cafe/ui/shared/xp_text.dart';
 
 class ProductPage extends StatefulWidget {
   final MenuItem menuItem;
@@ -12,10 +15,21 @@ class ProductPage extends StatefulWidget {
 
 class _ProductPage extends State<ProductPage> {
   int selectedSize = 1;
+  String notesText = "";
+  Map<String, int> customizationOptions = {
+    'Sugar': 1,
+    'Cream': 1,
+  };
 
   void _onSelectSize(int index) {
     setState(() {
       selectedSize = index;
+    });
+  }
+
+  void _onUpdateAddons(String key, int amount) {
+    setState(() {
+      customizationOptions[key] = amount;
     });
   }
 
@@ -37,7 +51,7 @@ class _ProductPage extends State<ProductPage> {
         const SizedBox(
           height: 10,
         ),
-        Divider()
+        const Divider()
       ],
     );
   }
@@ -48,11 +62,17 @@ class _ProductPage extends State<ProductPage> {
       children: [
         Container(
             padding: const EdgeInsets.all(10.0),
-            child: Text(
-              widget.menuItem.name,
-              textAlign: TextAlign.left,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-            )),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    widget.menuItem.name,
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 30),
+                  ),
+                  XPText(widget.menuItem.xp),
+                ])),
         Container(
             padding:
                 const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
@@ -65,6 +85,18 @@ class _ProductPage extends State<ProductPage> {
         const Divider()
       ],
     );
+  }
+
+  Widget _infoFooter() {
+    return Container(
+        color: Colors.red,
+        child: DefaultTextStyle(
+            style: const TextStyle(color: Colors.white),
+            child: _controllerWrapper(
+                'Ingredients',
+                Container(
+                    padding: const EdgeInsets.only(left: 10.0, bottom: 70.0),
+                    child: Text(widget.menuItem.ingredients.join(', '))))));
   }
 
   @override
@@ -96,7 +128,20 @@ class _ProductPage extends State<ProductPage> {
               _controllerWrapper(
                   'Size option',
                   SizeSelector(
-                      selection: selectedSize, callback: _onSelectSize))
+                      selection: selectedSize, callback: _onSelectSize)),
+              _controllerWrapper(
+                  'Customization options',
+                  Column(
+                      children: customizationOptions.entries
+                          .map((e) => AmountSelector(
+                              amount: e.value,
+                              title: e.key,
+                              callback: (updatedAmount) =>
+                                  _onUpdateAddons(e.key, updatedAmount)))
+                          .toList())),
+              _controllerWrapper('Additional notes',
+                  NotesField(callback: (value) => notesText = value)),
+              _infoFooter()
             ]))
           ],
         ),
