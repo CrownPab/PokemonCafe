@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'auth.dart';
 
 class Account {
-  static const ProgressTypes = ['Task','Deadline', 'Time'];
+  static const ProgressTypes = ['Task', 'Deadline', 'Time'];
   static const SortingTypes = ['Date Created', 'Deadline', 'Duration'];
   String id;
   bool swapActivationSide;
@@ -14,7 +14,7 @@ class Account {
   String progressType, sortingType;
   List<String> joinedProjects = [];
   Account(
-      { required this.id,
+      {required this.id,
       required this.profileImageURL,
       required this.name,
       required this.email,
@@ -54,8 +54,8 @@ class Account {
     return Account(
         id: id,
         profileImageURL: map['profileImageURL'],
-        name: map['name'],
-        email: map['email'],
+        name: map['UserName'],
+        email: map['Email'],
         darkTheme: (map.containsKey('darkTheme')) ? map['darkTheme'] : false,
         joinedProjects: (map.containsKey('joinedProjects'))
             ? map['joinedProjects'].cast<String>()
