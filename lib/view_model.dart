@@ -4,6 +4,11 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:pokemon_cafe/crud.dart' as crud;
 
 class ViewModel extends Model {
+  String? id;
+  ViewModel.initialize() {
+    crud.initializeFirebase();
+  }
+
   final Map<String, MenuItem> _allItems = {
     '000000': MenuItem(
         '000000',
