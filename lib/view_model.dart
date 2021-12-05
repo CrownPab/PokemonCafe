@@ -8,6 +8,7 @@ class ViewModel extends Model {
   String? id;
   Auth? auth;
   Account? currentAccount;
+  List<MenuItem> cart = [];
   ViewModel.initialize() {
     crud.initializeFirebase().then((value) {
       auth = Auth();
@@ -105,5 +106,13 @@ class ViewModel extends Model {
     await crud.createAccount(account);
     currentAccount = account;
     return account;
+  }
+
+  void addToCard(MenuItem item) {
+    cart.add(item);
+  }
+
+  void deletefromCard(MenuItem item) {
+    cart.remove(item);
   }
 }
