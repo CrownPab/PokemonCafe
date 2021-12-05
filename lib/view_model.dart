@@ -94,5 +94,6 @@ class ViewModel extends Model {
 
   void deletefromCard(MenuItem item) {
     cart.remove(item);
+    notifyListeners();
   }
 }

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pokemon_cafe/data/menu_item.dart';
+import 'package:pokemon_cafe/ui/menu_page.dart';
 import 'package:pokemon_cafe/ui/shared/xp_text.dart';
 import 'package:pokemon_cafe/view_model.dart';
 import 'package:scoped_model/scoped_model.dart';
+
+import 'home_page.dart';
 
 class CheckoutPage extends StatefulWidget {
   const CheckoutPage({Key? key}) : super(key: key);
@@ -30,12 +33,19 @@ class _CheckoutPage extends State<CheckoutPage> {
               Expanded(
                 child: ListView(
                   children: <Widget>[
-                    userSection(),
-                    pickupStoreSection(),
-                    pickupOptionsSection(),
-                    prepTimeSection(),
-                    checkoutItemSection(model),
-                    priceSection(model.cart)
+                    if (model.cart.isNotEmpty) ...[
+                      userSection(),
+                      pickupStoreSection(),
+                      pickupOptionsSection(),
+                      prepTimeSection(),
+                      checkoutItemSection(model),
+                      priceSection(model.cart)
+                    ] else ...[
+                      userSection(),
+                      pickupStoreSection(),
+                      pickupOptionsSection(),
+                      startOrderSection(),
+                    ]
                   ],
                 ),
                 flex: 90,
@@ -286,60 +296,58 @@ class _CheckoutPage extends State<CheckoutPage> {
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(4))),
         child: Container(
-          decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(4)),
-              border: Border.all(color: Colors.grey.shade200)),
-          padding:
-              const EdgeInsets.only(left: 12, top: 8, right: 12, bottom: 8),
-          child: ListView.builder(
-            itemBuilder: (BuildContext context, int index) {
-              return Card(
-                  child: Column(
-                children: <Widget>[
-                  const SizedBox(
-                    height: 4,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Image.asset(model.cart[index].image,
-                          width: 55, height: 55, fit: BoxFit.fitHeight),
-                      Column(
+            decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(4)),
+                border: Border.all(color: Colors.grey.shade200)),
+            padding:
+                const EdgeInsets.only(left: 12, top: 8, right: 12, bottom: 8),
+            child: ListView.builder(
+              itemBuilder: (BuildContext context, int index) {
+                return Card(
+                    child: Column(
+                  children: <Widget>[
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text(model.cart[index].name,
-                              style: CustomTextStyle.textStyleSemiBold
-                                  .copyWith(fontSize: 14)),
-                          const SizedBox(
-                            height: 4,
+                          Image.asset(model.cart[index].image,
+                              width: 55, height: 55, fit: BoxFit.fitHeight),
+                          Column(
+                            children: <Widget>[
+                              Text(model.cart[index].name,
+                                  style: CustomTextStyle.textStyleSemiBold
+                                      .copyWith(fontSize: 14)),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              XPText(xp: model.cart[index].xp, fontSize: 12),
+                            ],
                           ),
-                          XPText(xp: model.cart[index].xp, fontSize: 12),
-                        ],
-                      ),
-                      const SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        "\$${model.cart[index].price}",
-                        style: CustomTextStyle.textStyleRegular
-                            .copyWith(fontSize: 14),
-                      ),
-                      const SizedBox(
-                        width: 4,
-                      ),
-                      IconButton(
-                          onPressed: () {
-                            model.deletefromCard(model.cart[index]);
-                          },
-                          icon: const Icon(Icons.delete))
-                    ],
-                  )
-                ],
-              ));
-            },
-            itemCount: model.cart.length,
-            shrinkWrap: true,
-          ),
-        ),
+                          const SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                            "\$${model.cart[index].price}",
+                            style: CustomTextStyle.textStyleRegular
+                                .copyWith(fontSize: 14),
+                          ),
+                          const SizedBox(
+                            width: 4,
+                          ),
+                          IconButton(
+                              onPressed: () {
+                                model.deletefromCard(model.cart[index]);
+                              },
+                              icon: const Icon(Icons.delete))
+                        ])
+                  ],
+                ));
+              },
+              itemCount: model.cart.length,
+              shrinkWrap: true,
+            )),
       ),
     );
   }
@@ -392,8 +400,38 @@ class _CheckoutPage extends State<CheckoutPage> {
                   XPText(xp: xpEarned, fontSize: 12)
                 ],
               ),
-              createPriceItem("Subtotal", "\$$subTotal"),
-              createPriceItem("HST", "\$$hst"),
+              const SizedBox(
+                height: 4,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "Subtotal",
+                    style: CustomTextStyle.textStyleRegular,
+                  ),
+                  Text(
+                    "\$$subTotal",
+                    style: CustomTextStyle.textStyleRegular,
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 4,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "HST",
+                    style: CustomTextStyle.textStyleRegular,
+                  ),
+                  Text(
+                    "\$$hst",
+                    style: CustomTextStyle.textStyleRegular,
+                  ),
+                ],
+              ),
               const SizedBox(
                 height: 8,
               ),
@@ -420,18 +458,54 @@ class _CheckoutPage extends State<CheckoutPage> {
     );
   }
 
-  createPriceItem(String key, String value) {
+  startOrderSection() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Text(
-            key,
-            style: CustomTextStyle.textStyleRegular,
+      margin: const EdgeInsets.all(4),
+      child: Card(
+        elevation: 0,
+        child: Container(
+          decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(4)),
+              border: Border.all(color: Colors.grey.shade200)),
+          padding:
+              const EdgeInsets.only(left: 12, top: 8, right: 12, bottom: 8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const SizedBox(
+                height: 4,
+              ),
+              Text(
+                "Start your order",
+                style: CustomTextStyle.textStyleSemiBold.copyWith(fontSize: 14),
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              Text(
+                "As you add menu items, they'll appear here. You'll have a chance to review before placing your order.",
+                style: CustomTextStyle.textStyleRegular,
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              TextButton(
+                  style: TextButton.styleFrom(
+                    primary: Colors.white,
+                    backgroundColor: Colors.red[400],
+                    textStyle: const TextStyle(fontSize: 12),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => HomePage()));
+                  },
+                  child: const Text("Add items")),
+              const SizedBox(
+                height: 8,
+              ),
+            ],
           ),
-          Text(value, style: CustomTextStyle.textStyleRegular)
-        ],
+        ),
       ),
     );
   }
