@@ -26,7 +26,8 @@ class _MenuPage extends State<MenuPage> {
         ),
         onNotification: (notification) {
           setState(() {
-            if (notification.scrollDelta != null) {
+            if (notification.scrollDelta != null &&
+                notification.metrics.axis == Axis.vertical) {
               scrollDepth += notification.scrollDelta!;
             }
           });
