@@ -33,17 +33,6 @@ class _MyHomePageState extends State<MyHomePage> {
     Location("1365 Wilson Rd N", "Pewter City", LatLng(43.939078,-78.8598354))
   ];
 
-  Future<Position> getCurrentLocation() async {
-    LocationPermission permission;
-    permission = await Geolocator.checkPermission();
-
-    if (permission == LocationPermission.denied) {
-      Geolocator.requestPermission();
-    }
-    return await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,12 +58,42 @@ class Location {
   Location(this.address, this.city, this.latLong);
 }
 
-class ScaffoldBodyContent extends StatelessWidget {
+class ScaffoldBodyContent extends StatefulWidget {
   List<Location> latLonList;
+  ScaffoldBodyContent(this.latLonList);
+
+  @override
+  _ScaffoldBodyContentState createState() => _ScaffoldBodyContentState();
+}
+
+class _ScaffoldBodyContentState extends State<ScaffoldBodyContent> {
   static const IconData catching_pokemon_sharp =
       IconData(0xe844, fontFamily: 'MaterialIcons');
+  var center = LatLng(43.856098, -79.337021);
 
-  ScaffoldBodyContent(this.latLonList);
+  @override
+  void initState()  {
+    super.initState();
+    setCurrentLocation();
+  }
+
+  void setCurrentLocation() async{
+    var position = await getCurrentLocation();
+    setState(() {
+      center = LatLng(position.latitude, position.longitude);
+    });
+  }
+
+  Future<Position> getCurrentLocation() async {
+    LocationPermission permission;
+    permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+      Geolocator.requestPermission();
+    }
+    return await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best);
+  }
 
   List<Marker> markerList(List<Location> list) {
     List<Marker> markers = [];
@@ -117,6 +136,18 @@ class ScaffoldBodyContent extends StatelessWidget {
             );
           }));
     }
+    markers.add(Marker(
+        point: center,
+        builder: (BuildContext context) {
+          return IconButton(
+            onPressed: () {
+              print("PIN CLICKED!");
+            },
+            icon: const Icon(Icons.my_location),
+            iconSize: 20.0,
+            color: Colors.blueAccent,
+          );
+        }));
     return markers;
   }
 
@@ -128,8 +159,6 @@ class ScaffoldBodyContent extends StatelessWidget {
     }
     return points;
   }
-
-  final center = LatLng(43.856098, -79.337021);
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +174,7 @@ class ScaffoldBodyContent extends StatelessWidget {
               'id': 'mapbox.mapbox-streets-v8'
             }),
         MarkerLayerOptions(
-          markers: markerList(latLonList),
+          markers: markerList(widget.latLonList),
         ),
       ],
     );
