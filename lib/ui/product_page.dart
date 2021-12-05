@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokemon_cafe/data/menu_item.dart';
+import 'package:pokemon_cafe/ui/checkout_page.dart';
 import 'package:pokemon_cafe/ui/product/amount_selector.dart';
 import 'package:pokemon_cafe/ui/product/notes_field.dart';
 import 'package:pokemon_cafe/ui/product/size_selector.dart';
@@ -147,7 +148,12 @@ class _ProductPage extends State<ProductPage> {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: FloatingActionButton.extended(
-            onPressed: null,
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => CheckoutPage(
+                        checkoutItems: [widget.menuItem],
+                      )));
+            },
             label: Text(
               "Add \$${widget.menuItem.price} to Cart",
               style: const TextStyle(fontWeight: FontWeight.bold),

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:pokemon_cafe/data/menu_item.dart';
 
 class CheckoutPage extends StatefulWidget {
-  const CheckoutPage({Key? key}) : super(key: key);
+  const CheckoutPage({Key? key, required this.checkoutItems}) : super(key: key);
+
+  final List<MenuItem> checkoutItems;
 
   @override
   _CheckoutPage createState() => _CheckoutPage();
@@ -74,7 +77,7 @@ class _CheckoutPage extends State<CheckoutPage> {
                   alignment: Alignment.bottomCenter,
                   child: Image(
                     image: NetworkImage(
-                        'https://cdn3.vectorstock.com/i/1000x1000/76/82/thank-you-for-your-order-grunge-rubber-stamp-vector-38327682.jpg'),
+                        'https://i.pinimg.com/474x/c5/61/b5/c561b5c2ca8093f1e5c77239232b57f8.jpg'),
                     width: 250,
                   ),
                 ),
@@ -292,7 +295,7 @@ class _CheckoutPage extends State<CheckoutPage> {
             itemBuilder: (context, position) {
               return checkoutListItem();
             },
-            itemCount: 3,
+            itemCount: widget.checkoutItems.length,
             shrinkWrap: true,
           ),
         ),
