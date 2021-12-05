@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pokemon_cafe/data/menu_item.dart';
+import 'package:pokemon_cafe/view_model.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class CheckoutPage extends StatefulWidget {
-  const CheckoutPage({Key? key, required this.checkoutItems}) : super(key: key);
-
-  final List<MenuItem> checkoutItems;
+  const CheckoutPage({Key? key}) : super(key: key);
 
   @override
   _CheckoutPage createState() => _CheckoutPage();
@@ -15,9 +15,8 @@ class _CheckoutPage extends State<CheckoutPage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(primaryColor: Colors.red),
-      home: Scaffold(
+    return ScopedModelDescendant<ViewModel>(
+      builder: (context, child, model) => Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
           title: const Text(
@@ -34,7 +33,7 @@ class _CheckoutPage extends State<CheckoutPage> {
                     pickupStoreSection(),
                     pickupOptionsSection(),
                     prepTimeSection(),
-                    checkoutItemSection(),
+                    checkoutItemSection(model.cart),
                     priceSection()
                   ],
                 ),
@@ -278,7 +277,7 @@ class _CheckoutPage extends State<CheckoutPage> {
     );
   }
 
-  checkoutItemSection() {
+  checkoutItemSection(List<MenuItem> cart) {
     return Container(
       margin: const EdgeInsets.all(4),
       child: Card(
@@ -295,7 +294,7 @@ class _CheckoutPage extends State<CheckoutPage> {
             itemBuilder: (context, position) {
               return checkoutListItem();
             },
-            itemCount: widget.checkoutItems.length,
+            itemCount: cart.length,
             shrinkWrap: true,
           ),
         ),

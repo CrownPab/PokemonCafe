@@ -5,6 +5,7 @@ import 'package:pokemon_cafe/crud.dart' as crud;
 
 class ViewModel extends Model {
   String? id;
+  List<MenuItem> cart = [];
   ViewModel.initialize() {
     crud.initializeFirebase();
   }
@@ -85,5 +86,9 @@ class ViewModel extends Model {
 
   Future<Account?> getAccount() async {
     return await crud.getAccount(id ?? "E09hPBjLbidu4gHF4KxH");
+  }
+
+  void addToCard(MenuItem item) {
+    cart.add(item);
   }
 }
