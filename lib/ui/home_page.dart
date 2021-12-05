@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokemon_cafe/ui/checkout_page.dart';
+import 'package:pokemon_cafe/ui/store_location_page.dart';
 import 'package:pokemon_cafe/ui/menu_page.dart';
 import 'package:pokemon_cafe/ui/search_bar.dart';
 
@@ -24,7 +25,7 @@ class _HomePage extends State<HomePage> {
       case 0:
         return MenuPage();
       case 1:
-        return CheckoutPage();
+        return StoreSelectionPage();
       default:
         return const Center(
           child: CircularProgressIndicator(),
