@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokemon_cafe/ui/home_page.dart';
+import 'package:pokemon_cafe/ui/login_delegate.dart';
 import 'package:pokemon_cafe/view_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.red,
           ),
-          home: const HomePage(),
+          home: LoginDelegate(),
         ));
   }
 }

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:pokemon_cafe/account.dart';
 import 'package:pokemon_cafe/auth.dart';
+import 'package:pokemon_cafe/ui/signup_page.dart';
+import 'package:pokemon_cafe/view_model.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class LoginPage extends StatefulWidget {
   final AuthImpl auth;
@@ -38,7 +42,7 @@ class _LoginPage extends State<LoginPage> {
     return false;
   }
 
-  void validateAndSubmit(BuildContext context) async {
+  void validateAndSubmit(BuildContext context, ViewModel model) async {
     if (validateAndSave()) {
       try {
         if (_formMode == FormMode.SIGNIN) {
@@ -46,6 +50,9 @@ class _LoginPage extends State<LoginPage> {
           print('Signed in: $userId');
         } else {
           String userId = await widget.auth.signUp(_email, _password);
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) =>
+                  SignUpPage(account: Account.NewAccount(userId, _email))));
           print('Signed up user: $userId');
         }
         widget.onSignedIn();
@@ -54,11 +61,11 @@ class _LoginPage extends State<LoginPage> {
         showDialog(
             context: context,
             builder: (context) => AlertDialog(
-                  title: Text(
+                  title: const Text(
                     'Please ensure your email and password are correct.',
                   ),
                   actions: <Widget>[
-                    FlatButton(
+                    TextButton(
                       child: Text('Ok'),
                       onPressed: () => Navigator.pop(context),
                     )
@@ -70,10 +77,10 @@ class _LoginPage extends State<LoginPage> {
 
   Widget _logo() {
     return Text(
-      'Progress Bar',
+      'Pokemon Cafe',
       textAlign: TextAlign.start,
       textScaleFactor: 2.0,
-      style: new TextStyle(color: Colors.grey),
+      style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
     );
   }
 
@@ -116,7 +123,10 @@ class _LoginPage extends State<LoginPage> {
     if (_formMode == FormMode.SIGNIN) {
       return TextButton(
         child: const Text('Create an account',
-            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
+            style: TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.w300,
+                color: Colors.orange)),
         onPressed: _signUp,
       );
     } else {
@@ -128,54 +138,54 @@ class _LoginPage extends State<LoginPage> {
     }
   }
 
-  Widget _submitButton(BuildContext context) {
+  Widget _submitButton(BuildContext context, ViewModel model) {
     if (_formMode == FormMode.SIGNIN) {
       return Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           child: Material(
               borderRadius: BorderRadius.circular(30.0),
-              shadowColor: Colors.blueAccent.shade100,
+              shadowColor: Colors.red[700],
               child: MaterialButton(
                 minWidth: 200.0,
                 height: 42.0,
-                color: Colors.blue,
+                color: Colors.red[700],
                 child: const Text('Login',
                     style: TextStyle(fontSize: 20.0, color: Colors.white)),
-                onPressed: () => validateAndSubmit(context),
+                onPressed: () => validateAndSubmit(context, model),
               )));
     } else {
       return Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           child: Material(
               borderRadius: BorderRadius.circular(30.0),
-              shadowColor: Colors.lightBlueAccent.shade100,
               child: MaterialButton(
                 minWidth: 200.0,
                 height: 42.0,
-                color: Colors.blue,
+                color: Colors.red[700],
                 child: const Text('Create account',
                     style: TextStyle(fontSize: 20.0, color: Colors.white)),
-                onPressed: () => validateAndSubmit(context),
+                onPressed: () => validateAndSubmit(context, model),
               )));
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Form(
-        key: formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _logo(),
-            _emailInput(),
-            _passwordInput(),
-            _label(),
-            _submitButton(context)
-          ],
-        ),
-      ),
-    );
+    return ScopedModelDescendant<ViewModel>(
+        builder: (context, child, model) => Scaffold(
+              body: Form(
+                key: formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    _logo(),
+                    _emailInput(),
+                    _passwordInput(),
+                    _label(),
+                    _submitButton(context, model)
+                  ],
+                ),
+              ),
+            ));
   }
 }

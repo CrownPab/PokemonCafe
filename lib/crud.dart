@@ -11,10 +11,17 @@ Future initializeFirebase() async {
 }
 
 Future<Account?> getAccount(String id) async {
+  print(id);
   DocumentSnapshot accountQuery = await _mainCollection.doc(id).get();
   if (accountQuery.exists) {
     return Account.fromMap(id, accountQuery.data() as Map<String, dynamic>);
   } else {
     print('could not find document');
   }
+}
+
+Future<bool> createAccount(Account account) async {
+  print(account.mapTo());
+  await _mainCollection.doc(account.id).set(account.mapTo());
+  return true;
 }

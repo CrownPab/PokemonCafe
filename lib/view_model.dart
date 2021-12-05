@@ -1,14 +1,21 @@
 import 'package:pokemon_cafe/account.dart';
+import 'package:pokemon_cafe/auth.dart';
 import 'package:pokemon_cafe/data/menu_item.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:pokemon_cafe/crud.dart' as crud;
 
 class ViewModel extends Model {
   String? id;
+  Auth? auth;
+  Account? currentAccount;
   List<MenuItem> cart = [];
   ViewModel.initialize() {
-    crud.initializeFirebase();
+    crud.initializeFirebase().then((value) {
+      auth = Auth();
+      notifyListeners();
+    });
   }
+  Function? onSignOut;
 
   final Map<String, MenuItem> _allItems = {
     '000000': MenuItem(
@@ -85,7 +92,20 @@ class ViewModel extends Model {
   }
 
   Future<Account?> getAccount() async {
-    return await crud.getAccount(id ?? "E09hPBjLbidu4gHF4KxH");
+    if (auth != null) {
+      Account? account =
+          await crud.getAccount(auth!.uid ?? "E09hPBjLbidu4gHF4KxH");
+      currentAccount = account;
+      return account;
+    } else {
+      return await crud.getAccount("E09hPBjLbidu4gHF4KxH");
+    }
+  }
+
+  Future<Account?> createAccount(Account account) async {
+    await crud.createAccount(account);
+    currentAccount = account;
+    return account;
   }
 
   void addToCard(MenuItem item) {
