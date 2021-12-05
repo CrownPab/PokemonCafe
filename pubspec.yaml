@@ -37,6 +37,7 @@ dependencies:
   scoped_model: ^2.0.0-nullsafety.0
   firebase_core:
   cloud_firestore: 
+  firebase_auth:
 
 dev_dependencies:
   flutter_test:

@@ -6,7 +6,7 @@ class ProfileCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () => Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => const ProfilePage())),
+            .push(MaterialPageRoute(builder: (context) => ProfilePage())),
         child: Card(
             elevation: 2.0,
             child: Container(

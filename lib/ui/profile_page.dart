@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:pokemon_cafe/crud.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Stream<QuerySnapshot<Object?>> user = readItems();  
+  
     // Temporary List for Badges
-    final List<Map> myProducts = List.generate(
-        100000, (index) => {"id": index, "name": "Product $index"}).toList();
+    final List<Map> myProducts =
+        List.generate(4, (index) => {"id": index, "name": "Product $index"})
+            .toList();
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -96,7 +103,7 @@ class ProfilePage extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        "UserName: CrownPab",
+                        "UserName: ",
                         style: TextStyle(
                             color: Colors.grey[800],
                             fontWeight: FontWeight.w900,
