@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 
 class XPText extends StatelessWidget {
   final int xp;
-  XPText(this.xp);
+  final double fontSize;
+  XPText({required this.xp, this.fontSize = 26});
 
   @override
   Widget build(BuildContext context) {
     return Text(xp.toString() + 'XP',
-        style: const TextStyle(
+        style: TextStyle(
             color: Colors.blue,
             fontWeight: FontWeight.bold,
             fontStyle: FontStyle.italic,
-            fontSize: 26,
+            fontSize: fontSize,
             decoration: TextDecoration.underline));
   }
 }
