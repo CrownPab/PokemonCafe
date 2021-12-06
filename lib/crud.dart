@@ -8,6 +8,7 @@ import 'package:pokemon_cafe/data/menu_item.dart';
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 final CollectionReference _mainCollection = _firestore.collection('Users');
 final CollectionReference _menuCollection = _firestore.collection('Menu');
+final CollectionReference _locationsCollection = _firestore.collection('Locations');
 Future initializeFirebase() async {
   await Firebase.initializeApp();
 }
@@ -30,6 +31,13 @@ Future<bool> createAccount(Account account) async {
 
 Future<List<MenuItem>> getAllMenuItems() async {
   QuerySnapshot snapshot = await _menuCollection.get();
+  return snapshot.docs
+      .map((e) => MenuItem.fromMap(e.id, e.data() as Map<String, dynamic>))
+      .toList();
+}
+
+Future<List<MenuItem>> getAllLocations() async {
+  QuerySnapshot snapshot = await _locationsCollection.get();
   return snapshot.docs
       .map((e) => MenuItem.fromMap(e.id, e.data() as Map<String, dynamic>))
       .toList();

@@ -78,6 +78,10 @@ class ViewModel extends Model {
     return await crud.getAllMenuItems();
   }
 
+  Future<List> getAllLocations() async {
+    return await crud.getAllLocations();
+  }
+
   Future<Account?> getAccount() async {
     if (auth != null) {
       Account? account = await crud.getAccount(auth!.uid);
