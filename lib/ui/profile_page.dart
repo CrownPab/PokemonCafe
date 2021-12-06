@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:pokemon_cafe/account.dart';
 import 'package:pokemon_cafe/crud.dart';
+import 'package:pokemon_cafe/data/poki_api.dart';
 import 'package:pokemon_cafe/view_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -13,6 +14,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePage extends State<ProfilePage> {
   Account? account;
+  PokiStats? stats;
   @override
   Widget build(BuildContext context) {
     // Temporary List for Badges
@@ -49,6 +51,32 @@ class _ProfilePage extends State<ProfilePage> {
       return true;
     }
 
+    List<Widget> _loadPokemonStats(ViewModel model) {
+      if (stats == null) {
+        model.getPokemonStats('charmander').then((value) {
+          setState(() {
+            stats = value;
+          });
+        });
+        return [LinearProgressIndicator()];
+      }
+      return stats!
+          .toMap()
+          .entries
+          .map((e) => Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    e.key,
+                    textAlign: TextAlign.left,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(e.value.toString())
+                ],
+              ))
+          .toList();
+    }
+
     return ScopedModelDescendant<ViewModel>(
         builder: (context, child, model) => DefaultTabController(
               length: 2,
@@ -75,7 +103,7 @@ class _ProfilePage extends State<ProfilePage> {
                     ? const Center(child: CircularProgressIndicator())
                     : TabBarView(
                         children: [
-                          Column(
+                          ListView(
                             children: [
                               Container(
                                   child: Center(
@@ -233,6 +261,18 @@ class _ProfilePage extends State<ProfilePage> {
                                           fontFamily: 'Open Sans',
                                           fontSize: 20),
                                     ),
+                                    Card(
+                                      child: Container(
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                'Charmander Stats',
+                                              ),
+                                            ]..addAll(_loadPokemonStats(model)),
+                                          ),
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 5.0, horizontal: 20.0)),
+                                    )
                                   ],
                                 ),
                               )
