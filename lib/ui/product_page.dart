@@ -124,9 +124,7 @@ class _ProductPage extends State<ProductPage> {
                   flexibleSpace: FlexibleSpaceBar(
                     background: Hero(
                       tag: widget.menuItem.id + widget.collectionName + 'image',
-                      child: Image.asset('assets/images/coffee-cup.png'
-                          //widget.menuItem.image
-                          ),
+                      child: Image.network(widget.menuItem.image),
                     ),
                   ),
                 ),
