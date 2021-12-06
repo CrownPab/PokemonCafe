@@ -201,7 +201,7 @@ class _CheckoutPage extends State<CheckoutPage> {
                 children: const <Widget>[
                   Padding(
                     padding:
-                        EdgeInsets.only(left: 60, top: 8, right: 60, bottom: 8),
+                        EdgeInsets.only(left: 53, top: 8, right: 53, bottom: 8),
                     child: Text(
                       "In store",
                       style: TextStyle(fontSize: 13),
@@ -209,7 +209,7 @@ class _CheckoutPage extends State<CheckoutPage> {
                   ),
                   Padding(
                     padding:
-                        EdgeInsets.only(left: 60, top: 8, right: 60, bottom: 8),
+                        EdgeInsets.only(left: 53, top: 8, right: 53, bottom: 8),
                     child: Text(
                       "Drive-thru",
                       style: TextStyle(fontSize: 13),
