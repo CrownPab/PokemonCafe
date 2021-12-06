@@ -74,7 +74,7 @@ class ScaffoldBodyContent extends StatefulWidget {
 
 class _ScaffoldBodyContentState extends State<ScaffoldBodyContent> {
   static const IconData catching_pokemon_sharp =
-  IconData(0xe844, fontFamily: 'MaterialIcons');
+      IconData(0xe844, fontFamily: 'MaterialIcons');
   var center = LatLng(43.856098, -79.337021);
   late Location selectedStore;
 
@@ -150,11 +150,11 @@ class _ScaffoldBodyContentState extends State<ScaffoldBodyContent> {
                             ),
                             Text(list[i].address.toString()),
                             Text(calculateDistance(
-                                center.latitude,
-                                center.longitude,
-                                list[i].latLong!.latitude,
-                                list[i].latLong!.longitude)
-                                .toStringAsFixed(1) +
+                                        center.latitude,
+                                        center.longitude,
+                                        list[i].latLong!.latitude,
+                                        list[i].latLong!.longitude)
+                                    .toStringAsFixed(1) +
                                 " km"),
                           ],
                         ),
@@ -171,7 +171,8 @@ class _ScaffoldBodyContentState extends State<ScaffoldBodyContent> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => CheckoutPage(selectedStore: selectedStore)),
+                            builder: (context) =>
+                                CheckoutPage(selectedStore: selectedStore)),
                       );
                     },
                     textColor: Colors.white,
@@ -217,10 +218,10 @@ class _ScaffoldBodyContentState extends State<ScaffoldBodyContent> {
       layers: [
         TileLayerOptions(
             urlTemplate:
-            "https://api.mapbox.com/styles/v1/archer546546544862/ckwif12vc23wq15rp8dv33lda/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiYXJjaGVyNTQ2NTQ2NTQ0ODYyIiwiYSI6ImNrd2k5YnhqczEwcXoyb3AyNXh5emFzOHEifQ.XR8xde1W5IZs5AGQXM_XVg",
+                "https://api.mapbox.com/styles/v1/archer546546544862/ckwif12vc23wq15rp8dv33lda/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiYXJjaGVyNTQ2NTQ2NTQ0ODYyIiwiYSI6ImNrd2k5YnhqczEwcXoyb3AyNXh5emFzOHEifQ.XR8xde1W5IZs5AGQXM_XVg",
             additionalOptions: {
               'accessToken':
-              'pk.eyJ1IjoiYXJjaGVyNTQ2NTQ2NTQ0ODYyIiwiYSI6ImNrd2k5YnhqczEwcXoyb3AyNXh5emFzOHEifQ.XR8xde1W5IZs5AGQXM_XVg',
+                  'pk.eyJ1IjoiYXJjaGVyNTQ2NTQ2NTQ0ODYyIiwiYSI6ImNrd2k5YnhqczEwcXoyb3AyNXh5emFzOHEifQ.XR8xde1W5IZs5AGQXM_XVg',
               'id': 'mapbox.mapbox-streets-v8'
             }),
         MarkerLayerOptions(
