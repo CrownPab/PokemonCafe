@@ -20,9 +20,19 @@ class _ProfilePage extends State<ProfilePage> {
         List.generate(4, (index) => {"id": index, "name": "Product $index"})
             .toList();
 
-    var badgeList = ['Boulderbadge.webp', 'Cascadebadge.webp','Thunderbadge.webp','Volcanobadge.webp'];
-    
-    
+    var badgeList = [
+      'Boulderbadge.webp',
+      'Cascadebadge.webp',
+      'Thunderbadge.png',
+      'Volcanobadge.png'
+    ];
+    var firebaseBadge = [
+      'BoulderBadge',
+      'CascadeBadge',
+      'ThunderBadge',
+      'VolcanoBadge'
+    ];
+
     bool _isLoaded(ViewModel model) {
       if (account == null) {
         model.getAccount().then((value) {
@@ -40,7 +50,6 @@ class _ProfilePage extends State<ProfilePage> {
     }
 
     return ScopedModelDescendant<ViewModel>(
-      
         builder: (context, child, model) => DefaultTabController(
               length: 2,
               child: Scaffold(
@@ -52,6 +61,19 @@ class _ProfilePage extends State<ProfilePage> {
                     )
                   ]),
                   title: const Text('Profile Page'),
+                  actions: [
+                    IconButton(
+                      icon: const Icon(Icons.logout),
+                      color: Colors.white,
+                      onPressed: () async {
+                       
+
+                        setState(() {
+                          
+                        });
+                      },
+                    ),
+                  ],
                 ),
                 body: !_isLoaded(model)
                     ? const Center(child: CircularProgressIndicator())
@@ -72,10 +94,11 @@ class _ProfilePage extends State<ProfilePage> {
                                                 clipBehavior: Clip.none,
                                                 fit: StackFit.expand,
                                                 children: [
-                                                   CircleAvatar(
+                                                  CircleAvatar(
                                                     radius: 140.0,
-                                                    backgroundImage: NetworkImage(
-                                                        account!.profileImageUrl),
+                                                    backgroundImage:
+                                                        NetworkImage(account!
+                                                            .profileImageUrl),
                                                   ),
                                                   Positioned(
                                                     bottom: 0,
@@ -103,7 +126,8 @@ class _ProfilePage extends State<ProfilePage> {
                                           child: Row(
                                             children: [
                                               Text(
-                                                account!.pokemonLevel.toString(),
+                                                account!.pokemonLevel
+                                                    .toString(),
                                                 style: TextStyle(
                                                   color: Colors.black,
                                                 ),
@@ -115,7 +139,9 @@ class _ProfilePage extends State<ProfilePage> {
                                                 height: 25.0,
                                                 width: 325.0,
                                                 child: LinearProgressIndicator(
-                                                  value: account!.currentXpAmount / 100,
+                                                  value:
+                                                      account!.currentXpAmount /
+                                                          100,
                                                   valueColor:
                                                       AlwaysStoppedAnimation(
                                                           Colors.blue),
@@ -192,7 +218,7 @@ class _ProfilePage extends State<ProfilePage> {
                                           fontSize: 20),
                                     ),
                                     const SizedBox(height: 12.0),
-                                     Text(
+                                    Text(
                                       "First Name: ${account!.firstName}",
                                       style: TextStyle(
                                           color: Colors.grey[800],
@@ -216,21 +242,23 @@ class _ProfilePage extends State<ProfilePage> {
                               )
                             ],
                           ),
-                          
                           GridView.builder(
-                            
                               gridDelegate:
                                   const SliverGridDelegateWithMaxCrossAxisExtent(
                                       maxCrossAxisExtent: 200,
                                       childAspectRatio: 3 / 2,
                                       crossAxisSpacing: 20,
                                       mainAxisSpacing: 20),
-                              itemCount: myProducts.length,
+                              itemCount: firebaseBadge.length,
                               itemBuilder: (BuildContext ctx, index) {
                                 return Container(
                                   alignment: Alignment.center,
                                   child: Image(
-                                     image: AssetImage(badgeList[index])
+                                    image: AssetImage(
+                                        'assets/images/${badgeList[index]}'),
+                                    color: account!.badges[firebaseBadge[index]]
+                                        ? null
+                                        : Colors.black,
                                   ),
                                   decoration: BoxDecoration(
                                       color: Colors.transparent,

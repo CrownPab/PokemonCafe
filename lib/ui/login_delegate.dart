@@ -31,7 +31,9 @@ class _LoginDelegate extends State<LoginDelegate> {
   }
 
   Widget _loading(Auth auth) {
+   
     auth.getCurrentUser().then((userId) {
+      print("hahahah ${userId}");
       setState(() {
         authStatus =
             userId == '----' ? AuthStatus.NOT_SIGNED_IN : AuthStatus.SIGNED_IN;

@@ -67,7 +67,7 @@ class Account {
         userName: '',
         profileImageUrl: '',
         badges: Map.fromIterable(
-            ['BoulderBadge', 'EarthBadge', 'ThunderBadge', 'VolcanoBadge'],
+            ['BoulderBadge', 'CascadeBadge', 'ThunderBadge', 'VolcanoBadge'],
             key: (e) => e, value: (e) => false));
   }
   factory Account.fromMap(String id, Map<String, dynamic> map) {
