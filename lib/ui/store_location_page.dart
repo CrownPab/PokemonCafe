@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bottom_drawer/bottom_drawer.dart';
+import 'package:pokemon_cafe/ui/checkout_page.dart';
 import 'package:flutter_map/plugin_api.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
@@ -121,8 +121,10 @@ class _ScaffoldBodyContentState extends State<ScaffoldBodyContent> {
                 print("PIN CLICKED!");
                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))),
                   content: Container(
-                      height: 75,
+                      height: 70,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,9 +146,13 @@ class _ScaffoldBodyContentState extends State<ScaffoldBodyContent> {
                   duration: const Duration(days: 1),
                   backgroundColor: Colors.red,
                   action: SnackBarAction(
-                    label: 'Hide',
+                    label: 'Confirm',
                     onPressed: () {
                       print('Action is clicked');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const CheckoutPage()),
+                      );
                     },
                     textColor: Colors.white,
                     disabledTextColor: Colors.grey,
