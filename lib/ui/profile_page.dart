@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -5,9 +6,12 @@ import 'package:pokemon_cafe/account.dart';
 import 'package:pokemon_cafe/crud.dart';
 import 'package:pokemon_cafe/view_model.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:pokemon_cafe/camera_page.dart';
 
 class ProfilePage extends StatefulWidget {
-  ProfilePage({Key? key}) : super(key: key);
+  ProfilePage({
+    Key? key,
+  }) : super(key: key);
   _ProfilePage createState() => _ProfilePage();
 }
 
@@ -66,11 +70,7 @@ class _ProfilePage extends State<ProfilePage> {
                       icon: const Icon(Icons.logout),
                       color: Colors.white,
                       onPressed: () async {
-                       
-
-                        setState(() {
-                          
-                        });
+                        setState(() {});
                       },
                     ),
                   ],
@@ -94,11 +94,17 @@ class _ProfilePage extends State<ProfilePage> {
                                                 clipBehavior: Clip.none,
                                                 fit: StackFit.expand,
                                                 children: [
-                                                  CircleAvatar(
-                                                    radius: 140.0,
-                                                    backgroundImage:
-                                                        NetworkImage(account!
-                                                            .profileImageUrl),
+                                                  GestureDetector(
+                                                    onTap: () => Navigator.of(
+                                                            context)
+                                                        .push(MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                CameraPage())),
+                                                    child: CircleAvatar(
+                                                      radius: 140.0,
+                                                      backgroundImage: (model.image != null) ? model.image!.image
+                                                          : NetworkImage(account!.profileImageUrl),
+                                                    ),
                                                   ),
                                                   Positioned(
                                                     bottom: 0,

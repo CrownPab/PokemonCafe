@@ -43,6 +43,8 @@ dependencies:
   latlng:
   flutter_map:
   bottom_drawer: ^0.0.3
+  camera: 
+  image: 
 
 dev_dependencies:
   flutter_test:

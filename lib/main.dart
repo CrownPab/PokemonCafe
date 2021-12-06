@@ -3,9 +3,13 @@ import 'package:pokemon_cafe/ui/home_page.dart';
 import 'package:pokemon_cafe/ui/login_delegate.dart';
 import 'package:pokemon_cafe/view_model.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:camera/camera.dart';
+
+List<CameraDescription> cameras = [];
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  cameras = await availableCameras();
   runApp(const MyApp());
 }
 

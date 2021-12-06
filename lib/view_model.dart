@@ -1,3 +1,5 @@
+import 'package:camera/camera.dart';
+import 'package:flutter/material.dart';
 import 'package:pokemon_cafe/account.dart';
 import 'package:pokemon_cafe/auth.dart';
 import 'package:pokemon_cafe/data/menu_item.dart';
@@ -10,6 +12,7 @@ class ViewModel extends Model {
   String? id;
   Auth? auth;
   Account? currentAccount;
+  Image? image; 
   List<MenuItem> cart = [];
   ViewModel.initialize() {
     crud.initializeFirebase().then((value) {
@@ -98,6 +101,11 @@ class ViewModel extends Model {
 
   void deletefromCard(MenuItem item) {
     cart.remove(item);
+    notifyListeners();
+  }
+
+  void setImage(Image image){ 
+    this.image = image; 
     notifyListeners();
   }
 }
