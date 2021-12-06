@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pokemon_cafe/data/menu_item.dart';
 import 'package:pokemon_cafe/data/order_item.dart';
 import 'package:pokemon_cafe/ui/menu_page.dart';
+import 'package:pokemon_cafe/ui/profile_card.dart';
 import 'package:pokemon_cafe/ui/shared/xp_text.dart';
 import 'package:pokemon_cafe/ui/store_location_page.dart';
 import 'package:pokemon_cafe/view_model.dart';
@@ -106,40 +107,10 @@ class _CheckoutPage extends State<CheckoutPage> {
 
   userSection() {
     return Container(
-      margin: const EdgeInsets.all(4),
-      child: Card(
-        elevation: 0,
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(4))),
-        child: Container(
-          decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(4)),
-              border: Border.all(color: Colors.grey.shade200)),
-          padding: const EdgeInsets.only(left: 12, top: 8, right: 12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const SizedBox(
-                height: 6,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "Kelly Pham",
-                    style: CustomTextStyle.textStyleSemiBold
-                        .copyWith(fontSize: 14),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+        margin: const EdgeInsets.all(4),
+        child: ProfileCard(
+          scrollDepth: 0,
+        ));
   }
 
   pickupStoreSection() {
