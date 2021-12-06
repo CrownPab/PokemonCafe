@@ -1,6 +1,7 @@
 import 'package:pokemon_cafe/account.dart';
 import 'package:pokemon_cafe/auth.dart';
 import 'package:pokemon_cafe/data/menu_item.dart';
+import 'package:pokemon_cafe/data/order_item.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:pokemon_cafe/crud.dart' as crud;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,7 +11,7 @@ class ViewModel extends Model {
   String? id;
   Auth? auth;
   Account? currentAccount;
-  List<MenuItem> cart = [];
+  List<OrderItem> cart = [];
   ViewModel.initialize() {
     crud.initializeFirebase().then((value) {
       auth = Auth();
@@ -19,7 +20,7 @@ class ViewModel extends Model {
   }
   Function? onSignOut;
 
-  final Map<String, MenuItem> _allItems = {
+  final Map<String, OrderItem> _allItems = {
     // '000000': MenuItem(
     //     '000000',
     //     'PikaChino',
@@ -69,7 +70,7 @@ class ViewModel extends Model {
     //     100,
     //     <String>['Ice', 'Sweet Cream', 'Brewed Coffee', 'Classic Syrup']),
   };
-  Future<List<MenuItem>> searchMenu(String query) async {
+  Future<List<OrderItem>> searchMenu(String query) async {
     await Future.delayed(const Duration(seconds: 1));
     return [_allItems['000000']!];
   }
@@ -92,11 +93,11 @@ class ViewModel extends Model {
     return account;
   }
 
-  void addToCard(MenuItem item) {
+  void addToCart(OrderItem item) {
     cart.add(item);
   }
 
-  void deletefromCard(MenuItem item) {
+  void deletefromCart(OrderItem item) {
     cart.remove(item);
     notifyListeners();
   }
