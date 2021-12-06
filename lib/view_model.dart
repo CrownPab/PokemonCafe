@@ -131,6 +131,7 @@ class ViewModel extends Model {
       }
     });
     crud.updateAccount(currentAccount!);
+    notifyListeners();
     try {
       n.Notification notification = n.Notification(context);
       notification.showScheduledNotification();
