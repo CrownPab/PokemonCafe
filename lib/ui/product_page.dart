@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokemon_cafe/data/menu_item.dart';
+import 'package:pokemon_cafe/data/order_item.dart';
 import 'package:pokemon_cafe/ui/checkout_page.dart';
 import 'package:pokemon_cafe/ui/product/amount_selector.dart';
 import 'package:pokemon_cafe/ui/product/notes_field.dart';
@@ -23,6 +24,7 @@ class _ProductPage extends State<ProductPage> {
     'Sugar': 1,
     'Cream': 1,
   };
+  late OrderItem selectedItem;
 
   void _onSelectSize(int index) {
     setState(() {
@@ -160,7 +162,13 @@ class _ProductPage extends State<ProductPage> {
                 FloatingActionButtonLocation.centerFloat,
             floatingActionButton: FloatingActionButton.extended(
                 onPressed: () {
-                  model.addToCard(widget.menuItem);
+                  selectedItem = OrderItem(
+                      widget.menuItem,
+                      selectedSize,
+                      customizationOptions['Sugar'],
+                      customizationOptions['Cream'],
+                      notesText);
+                  model.addToCart(selectedItem);
                   Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => CheckoutPage()));
                 },
