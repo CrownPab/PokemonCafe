@@ -1,4 +1,5 @@
 import 'package:pokemon_cafe/account.dart';
+import 'package:pokemon_cafe/auth.dart';
 import 'package:pokemon_cafe/data/menu_item.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:pokemon_cafe/crud.dart' as crud;
@@ -10,9 +11,16 @@ final CollectionReference _menuCollection = _firestore.collection('Menu');
 
 class ViewModel extends Model {
   String? id;
+  Auth? auth;
+  Account? currentAccount;
+  List<MenuItem> cart = [];
   ViewModel.initialize() {
-    crud.initializeFirebase();
+    crud.initializeFirebase().then((value) {
+      auth = Auth();
+      notifyListeners();
+    });
   }
+  Function? onSignOut;
 
   final Map<String, MenuItem> _allItems = {
 
@@ -78,6 +86,28 @@ class ViewModel extends Model {
   }
 
   Future<Account?> getAccount() async {
-    return await crud.getAccount("E09hPBjLbidu4gHF4KxH");
+    if (auth != null) {
+      Account? account =
+          await crud.getAccount("E09hPBjLbidu4gHF4KxH");
+      currentAccount = account;
+      return account;
+    } else {
+      return await crud.getAccount("E09hPBjLbidu4gHF4KxH");
+    }
+  }
+
+  Future<Account?> createAccount(Account account) async {
+    await crud.createAccount(account);
+    currentAccount = account;
+    return account;
+  }
+
+  void addToCard(MenuItem item) {
+    cart.add(item);
+  }
+
+  void deletefromCard(MenuItem item) {
+    cart.remove(item);
+    notifyListeners();
   }
 }

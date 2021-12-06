@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:pokemon_cafe/data/menu_item.dart';
+import 'package:pokemon_cafe/ui/checkout_page.dart';
 import 'package:pokemon_cafe/ui/product/amount_selector.dart';
 import 'package:pokemon_cafe/ui/product/notes_field.dart';
 import 'package:pokemon_cafe/ui/product/size_selector.dart';
 import 'package:pokemon_cafe/ui/shared/xp_text.dart';
+import 'package:pokemon_cafe/view_model.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class ProductPage extends StatefulWidget {
   final MenuItem menuItem;
@@ -101,56 +104,62 @@ class _ProductPage extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              expandedHeight: 200,
-              floating: true,
-              actions: const [
-                IconButton(
-                    onPressed: null,
-                    icon: Icon(
-                      Icons.favorite_border_rounded,
-                      color: Colors.white,
-                    ))
-              ],
-              flexibleSpace: FlexibleSpaceBar(
-                background: Hero(
-                  tag: widget.menuItem.id + widget.collectionName + 'image',
-                  child: Image.asset(widget.menuItem.image),
+    return ScopedModelDescendant<ViewModel>(
+        builder: (context, child, model) => Scaffold(
+            body: CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  expandedHeight: 200,
+                  floating: true,
+                  actions: const [
+                    IconButton(
+                        onPressed: null,
+                        icon: Icon(
+                          Icons.favorite_border_rounded,
+                          color: Colors.white,
+                        ))
+                  ],
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: Hero(
+                      tag: widget.menuItem.id + widget.collectionName + 'image',
+                      child: Image.asset(widget.menuItem.image),
+                    ),
+                  ),
                 ),
-              ),
+                SliverList(
+                    delegate: SliverChildListDelegate([
+                  _infoSection(),
+                  _controllerWrapper(
+                      'Size option',
+                      SizeSelector(
+                          selection: selectedSize, callback: _onSelectSize)),
+                  _controllerWrapper(
+                      'Customization options',
+                      Column(
+                          children: customizationOptions.entries
+                              .map((e) => AmountSelector(
+                                  amount: e.value,
+                                  title: e.key,
+                                  callback: (updatedAmount) =>
+                                      _onUpdateAddons(e.key, updatedAmount)))
+                              .toList())),
+                  _controllerWrapper('Additional notes',
+                      NotesField(callback: (value) => notesText = value)),
+                  _infoFooter()
+                ]))
+              ],
             ),
-            SliverList(
-                delegate: SliverChildListDelegate([
-              _infoSection(),
-              _controllerWrapper(
-                  'Size option',
-                  SizeSelector(
-                      selection: selectedSize, callback: _onSelectSize)),
-              _controllerWrapper(
-                  'Customization options',
-                  Column(
-                      children: customizationOptions.entries
-                          .map((e) => AmountSelector(
-                              amount: e.value,
-                              title: e.key,
-                              callback: (updatedAmount) =>
-                                  _onUpdateAddons(e.key, updatedAmount)))
-                          .toList())),
-              _controllerWrapper('Additional notes',
-                  NotesField(callback: (value) => notesText = value)),
-              _infoFooter()
-            ]))
-          ],
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: FloatingActionButton.extended(
-            onPressed: null,
-            label: Text(
-              "Add \$${widget.menuItem.price} to Cart",
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            )));
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+            floatingActionButton: FloatingActionButton.extended(
+                onPressed: () {
+                  model.addToCard(widget.menuItem);
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => CheckoutPage()));
+                },
+                label: Text(
+                  "Add \$${widget.menuItem.price} to Cart",
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ))));
   }
 }
