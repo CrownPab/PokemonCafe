@@ -85,9 +85,11 @@ class _ScaffoldBodyContentState extends State<ScaffoldBodyContent> {
 
   void setCurrentLocation() async {
     var position = await getCurrentLocation();
-    setState(() {
-      center = LatLng(position.latitude, position.longitude);
-    });
+    if (mounted) {
+      setState(() {
+        center = LatLng(position.latitude, position.longitude);
+      });
+    }
   }
 
   Future<Position> getCurrentLocation() async {
@@ -132,8 +134,7 @@ class _ScaffoldBodyContentState extends State<ScaffoldBodyContent> {
                   content: Container(
                       height: 75,
                       child: Row(children: [
-                        Image.asset(list[i].imagePath!,
-                            width: 75, height: 75),
+                        Image.asset(list[i].imagePath!, width: 75, height: 75),
                         const SizedBox(
                           width: 15,
                         ),

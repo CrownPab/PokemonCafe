@@ -43,6 +43,7 @@ dependencies:
   latlng:
   flutter_map:
   bottom_drawer: ^0.0.3
+  flutter_local_notifications: 
 
 dev_dependencies:
   flutter_test:

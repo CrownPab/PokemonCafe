@@ -60,6 +60,7 @@ class _CheckoutPage extends State<CheckoutPage> {
                   child: RaisedButton(
                     onPressed: () {
                       showThankYouBottomMessage(context);
+                      model.onCheckout(context);
                     },
                     child: const Text(
                       "Place Order",
@@ -529,8 +530,9 @@ class _CheckoutPage extends State<CheckoutPage> {
                     textStyle: const TextStyle(fontSize: 12),
                   ),
                   onPressed: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => HomePage()));
+                    // causes problems with bottom navigaton
+                    // Navigator.of(context).push(
+                    //     MaterialPageRoute(builder: (context) => HomePage()));
                   },
                   child: const Text("Add items")),
               const SizedBox(

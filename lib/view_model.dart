@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:pokemon_cafe/account.dart';
 import 'package:pokemon_cafe/auth.dart';
 import 'package:pokemon_cafe/data/menu_item.dart';
 import 'package:pokemon_cafe/data/order_item.dart';
+import 'package:pokemon_cafe/data/notification.dart' as n;
 import 'package:scoped_model/scoped_model.dart';
 import 'package:pokemon_cafe/crud.dart' as crud;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -100,5 +102,10 @@ class ViewModel extends Model {
   void deletefromCart(OrderItem item) {
     cart.remove(item);
     notifyListeners();
+  }
+
+  void onCheckout(BuildContext context) {
+    n.Notification notification = n.Notification(context);
+    notification.showScheduledNotification();
   }
 }
