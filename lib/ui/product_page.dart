@@ -96,7 +96,7 @@ class _ProductPage extends State<ProductPage> {
                 'Ingredients',
                 Container(
                     padding: const EdgeInsets.only(left: 10.0, bottom: 70.0),
-                    child: Text(widget.menuItem.ingredients.join(', '))))));
+                  ))));
   }
 
   @override
