@@ -37,20 +37,24 @@ class Notification {
   }
 
   Future showScheduledNotification() async {
-    var android = AndroidNotificationDetails("channelId", "channelName",
-        channelDescription: "Your Order is Ready!",
-        priority: Priority.high,
-        importance: Importance.max);
-    var platformDetails = NotificationDetails(android: android);
-    await notification.zonedSchedule(
-        101,
-        "Your Order is Ready",
-        "Pick up your order at the counter!",
-        tz.TZDateTime.from(DateTime.now(), tz.local)
-            .add(const Duration(minutes: 5)),
-        platformDetails,
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime,
-        androidAllowWhileIdle: true);
+    try {
+      var android = AndroidNotificationDetails("channelId", "channelName",
+          channelDescription: "Your Order is Ready!",
+          priority: Priority.high,
+          importance: Importance.max);
+      var platformDetails = NotificationDetails(android: android);
+      await notification.zonedSchedule(
+          101,
+          "Your Order is Ready",
+          "Pick up your order at the counter!",
+          tz.TZDateTime.from(DateTime.now(), tz.local)
+              .add(const Duration(minutes: 5)),
+          platformDetails,
+          uiLocalNotificationDateInterpretation:
+              UILocalNotificationDateInterpretation.absoluteTime,
+          androidAllowWhileIdle: true);
+    } catch (e) {
+      print(e);
+    }
   }
 }

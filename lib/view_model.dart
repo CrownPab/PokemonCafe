@@ -111,12 +111,32 @@ class ViewModel extends Model {
   }
 
   void onCheckout(BuildContext context) {
-    n.Notification notification = n.Notification(context);
-    notification.showScheduledNotification();
-
-    currentAccount!.currentXpAmount +=
-        cart.map((i) => i.menuItem.xp).toList().reduce((a, b) => a + b);
-
+    cart.forEach((element) {
+      currentAccount!.currentXpAmount += element.menuItem.xp;
+      if (currentAccount!.currentXpAmount >= 100) {
+        currentAccount!.pokemonLevel += 1;
+        currentAccount!.currentXpAmount -= 100;
+        if (currentAccount!.pokemonLevel == 0) {
+          currentAccount!.badges['BoulderBadge'] = true;
+        }
+        if (currentAccount!.pokemonLevel == 1) {
+          currentAccount!.badges['CascadeBadge'] = true;
+        }
+        if (currentAccount!.pokemonLevel == 2) {
+          currentAccount!.badges['ThunderBadge'] = true;
+        }
+        if (currentAccount!.pokemonLevel == 3) {
+          currentAccount!.badges['VolcanoBadge'] = true;
+        }
+      }
+    });
+    crud.updateAccount(currentAccount!);
     notifyListeners();
+    try {
+      n.Notification notification = n.Notification(context);
+      notification.showScheduledNotification();
+    } catch (e) {
+      print(e);
+    }
   }
 }

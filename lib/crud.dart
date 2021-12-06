@@ -34,3 +34,7 @@ Future<List<MenuItem>> getAllMenuItems() async {
       .map((e) => MenuItem.fromMap(e.id, e.data() as Map<String, dynamic>))
       .toList();
 }
+
+void updateAccount(Account account) async {
+  await _mainCollection.doc(account.id).update(account.mapTo());
+}
