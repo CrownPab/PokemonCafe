@@ -313,7 +313,7 @@ class _CheckoutPage extends State<CheckoutPage> {
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Image.asset(model.cart[index].image,
+                          Image.network(model.cart[index].image,
                               width: 55, height: 55, fit: BoxFit.fitHeight),
                           Column(
                             children: <Widget>[
