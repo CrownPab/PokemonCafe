@@ -63,16 +63,12 @@ class _ProfilePage extends State<ProfilePage> {
                   title: const Text('Profile Page'),
                   actions: [
                     IconButton(
-                      icon: const Icon(Icons.logout),
-                      color: Colors.white,
-                      onPressed: () async {
-                       
-
-                        setState(() {
-                          
-                        });
-                      },
-                    ),
+                        icon: const Icon(Icons.logout),
+                        color: Colors.white,
+                        onPressed: () {
+                          model.onSignOut!();
+                          Navigator.pop(context);
+                        }),
                   ],
                 ),
                 body: !_isLoaded(model)
