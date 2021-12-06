@@ -22,9 +22,9 @@ class MenuItemThumbnail extends StatelessWidget {
               height: 70,
               child: Hero(
                   tag: item.id + collectionName + 'image',
-                  child: Image.asset(
-                    item.image,
-                  )),
+                  child: Image.asset('assets/images/coffee-cup.png'
+                      // item.image,
+                      )),
               decoration: const BoxDecoration(
                   shape: BoxShape.circle, color: Colors.red),
             ),

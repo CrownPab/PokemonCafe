@@ -6,9 +6,6 @@ import 'package:pokemon_cafe/crud.dart' as crud;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-final CollectionReference _menuCollection = _firestore.collection('Menu');
-
 class ViewModel extends Model {
   String? id;
   Auth? auth;
@@ -23,8 +20,6 @@ class ViewModel extends Model {
   Function? onSignOut;
 
   final Map<String, MenuItem> _allItems = {
-
-  
     // '000000': MenuItem(
     //     '000000',
     //     'PikaChino',
@@ -79,16 +74,13 @@ class ViewModel extends Model {
     return [_allItems['000000']!];
   }
 
-  Future<Map<String, List<MenuItem>>> getAllMenuItems() async {
-    await Future.delayed(const Duration(seconds: 1));
-
-    return _menuCollection.get() as Map<String, List<MenuItem>>;
+  Future<List<MenuItem>> getAllMenuItems() async {
+    return await crud.getAllMenuItems();
   }
 
   Future<Account?> getAccount() async {
     if (auth != null) {
-      Account? account =
-          await crud.getAccount("E09hPBjLbidu4gHF4KxH");
+      Account? account = await crud.getAccount("E09hPBjLbidu4gHF4KxH");
       currentAccount = account;
       return account;
     } else {
