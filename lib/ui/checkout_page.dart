@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pokemon_cafe/data/menu_item.dart';
+import 'package:pokemon_cafe/data/order_item.dart';
 import 'package:pokemon_cafe/ui/menu_page.dart';
+import 'package:pokemon_cafe/ui/profile_card.dart';
 import 'package:pokemon_cafe/ui/shared/xp_text.dart';
+import 'package:pokemon_cafe/ui/store_location_page.dart';
 import 'package:pokemon_cafe/view_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -58,6 +61,7 @@ class _CheckoutPage extends State<CheckoutPage> {
                   child: RaisedButton(
                     onPressed: () {
                       showThankYouBottomMessage(context);
+                      model.onCheckout(context);
                     },
                     child: const Text(
                       "Place Order",
@@ -103,40 +107,10 @@ class _CheckoutPage extends State<CheckoutPage> {
 
   userSection() {
     return Container(
-      margin: const EdgeInsets.all(4),
-      child: Card(
-        elevation: 0,
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(4))),
-        child: Container(
-          decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(4)),
-              border: Border.all(color: Colors.grey.shade200)),
-          padding: const EdgeInsets.only(left: 12, top: 8, right: 12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const SizedBox(
-                height: 6,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "Kelly Pham",
-                    style: CustomTextStyle.textStyleSemiBold
-                        .copyWith(fontSize: 14),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+        margin: const EdgeInsets.all(4),
+        child: ProfileCard(
+          scrollDepth: 0,
+        ));
   }
 
   pickupStoreSection() {
@@ -289,6 +263,8 @@ class _CheckoutPage extends State<CheckoutPage> {
   }
 
   checkoutItemSection(ViewModel model) {
+    List<String> sizes = ["Small", "Medium", "Large"];
+
     return Container(
       margin: const EdgeInsets.all(4),
       child: Card(
@@ -312,24 +288,51 @@ class _CheckoutPage extends State<CheckoutPage> {
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Image.asset(model.cart[index].image,
+                          Image.network(model.cart[index].menuItem.image,
                               width: 55, height: 55, fit: BoxFit.fitHeight),
                           Column(
                             children: <Widget>[
-                              Text(model.cart[index].name,
+                              Text(model.cart[index].menuItem.name,
                                   style: CustomTextStyle.textStyleSemiBold
                                       .copyWith(fontSize: 14)),
                               const SizedBox(
                                 height: 4,
                               ),
-                              XPText(xp: model.cart[index].xp, fontSize: 12),
+                              XPText(
+                                  xp: model.cart[index].menuItem.xp,
+                                  fontSize: 12),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              Text(sizes[model.cart[index].size],
+                                  style: CustomTextStyle.textStyleRegular),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              Text(
+                                  model.cart[index].sugar.toString() + " Sugar",
+                                  style: CustomTextStyle.textStyleRegular),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              Text(
+                                  model.cart[index].cream.toString() + " Cream",
+                                  style: CustomTextStyle.textStyleRegular),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              Text(model.cart[index].notes,
+                                  style: CustomTextStyle.textStyleRegular),
+                              const SizedBox(
+                                height: 4,
+                              ),
                             ],
                           ),
                           const SizedBox(
                             width: 8,
                           ),
                           Text(
-                            "\$${model.cart[index].price}",
+                            "\$${model.cart[index].menuItem.price}",
                             style: CustomTextStyle.textStyleRegular
                                 .copyWith(fontSize: 14),
                           ),
@@ -338,7 +341,7 @@ class _CheckoutPage extends State<CheckoutPage> {
                           ),
                           IconButton(
                               onPressed: () {
-                                model.deletefromCard(model.cart[index]);
+                                model.deletefromCart(model.cart[index]);
                               },
                               icon: const Icon(Icons.delete))
                         ])
@@ -352,11 +355,13 @@ class _CheckoutPage extends State<CheckoutPage> {
     );
   }
 
-  priceSection(List<MenuItem> cart) {
-    double subTotal = cart.map((i) => i.price).toList().reduce((a, b) => a + b);
+  priceSection(List<OrderItem> cart) {
+    double subTotal =
+        cart.map((i) => i.menuItem.price).toList().reduce((a, b) => a + b);
     double hst = subTotal * 0.13;
     double total = subTotal + hst;
-    int xpEarned = cart.map((i) => i.xp).toList().reduce((a, b) => a + b);
+    int xpEarned =
+        cart.map((i) => i.menuItem.xp).toList().reduce((a, b) => a + b);
 
     return Container(
       margin: const EdgeInsets.all(4),
@@ -411,7 +416,7 @@ class _CheckoutPage extends State<CheckoutPage> {
                     style: CustomTextStyle.textStyleRegular,
                   ),
                   Text(
-                    "\$$subTotal",
+                    "\$${double.parse((subTotal).toStringAsFixed(2))}",
                     style: CustomTextStyle.textStyleRegular,
                   ),
                 ],
@@ -427,7 +432,7 @@ class _CheckoutPage extends State<CheckoutPage> {
                     style: CustomTextStyle.textStyleRegular,
                   ),
                   Text(
-                    "\$$hst",
+                    "\$${double.parse((hst).toStringAsFixed(2))}",
                     style: CustomTextStyle.textStyleRegular,
                   ),
                 ],
@@ -443,7 +448,7 @@ class _CheckoutPage extends State<CheckoutPage> {
                     style: CustomTextStyle.textStyleBold.copyWith(fontSize: 14),
                   ),
                   Text(
-                    "\$$total",
+                    "\$${double.parse((total).toStringAsFixed(2))}",
                     style: CustomTextStyle.textStyleBold.copyWith(fontSize: 14),
                   )
                 ],
@@ -489,20 +494,21 @@ class _CheckoutPage extends State<CheckoutPage> {
               const SizedBox(
                 height: 8,
               ),
-              TextButton(
-                  style: TextButton.styleFrom(
-                    primary: Colors.white,
-                    backgroundColor: Colors.red[400],
-                    textStyle: const TextStyle(fontSize: 12),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => HomePage()));
-                  },
-                  child: const Text("Add items")),
-              const SizedBox(
-                height: 8,
-              ),
+              // TextButton(
+              //     style: TextButton.styleFrom(
+              //       primary: Colors.white,
+              //       backgroundColor: Colors.red[400],
+              //       textStyle: const TextStyle(fontSize: 12),
+              //     ),
+              //     onPressed: () {
+              //       // causes problems with bottom navigaton
+              //       // Navigator.of(context).push(
+              //       //     MaterialPageRoute(builder: (context) => HomePage()));
+              //     },
+              //     child: const Text("Add items")),
+              // const SizedBox(
+              //   height: 8,
+              // ),
             ],
           ),
         ),

@@ -39,7 +39,7 @@ class Auth implements AuthImpl {
   Future<String> getCurrentUser() async {
     var user = _firebaseAuth.currentUser;
     if (user == null) return uid;
-    uid = user!.uid;
+    uid = user.uid;
     email = user.email!;
     return uid;
   }

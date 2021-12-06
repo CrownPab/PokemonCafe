@@ -22,17 +22,18 @@ class MenuItemThumbnail extends StatelessWidget {
               height: 70,
               child: Hero(
                   tag: item.id + collectionName + 'image',
-                  child: Image.asset('assets/images/coffee-cup.png'
-                      // item.image,
-                      )),
+                  child: Image.network(item.image)),
               decoration: const BoxDecoration(
                   shape: BoxShape.circle, color: Colors.red),
             ),
             const SizedBox(height: 2.0),
-            Text(
-              item.name,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 12.0),
+            Container(
+              child: Text(
+                item.name,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 12.0),
+              ),
+              width: 100,
             )
           ]),
         ));

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokemon_cafe/data/menu_item.dart';
+import 'package:pokemon_cafe/data/order_item.dart';
 import 'package:pokemon_cafe/ui/checkout_page.dart';
 import 'package:pokemon_cafe/ui/product/amount_selector.dart';
 import 'package:pokemon_cafe/ui/product/notes_field.dart';
@@ -23,6 +24,7 @@ class _ProductPage extends State<ProductPage> {
     'Sugar': 1,
     'Cream': 1,
   };
+  late OrderItem selectedItem;
 
   void _onSelectSize(int index) {
     setState(() {
@@ -59,7 +61,7 @@ class _ProductPage extends State<ProductPage> {
     );
   }
 
-  Widget _infoSection() {
+  Widget _infoSection(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -68,12 +70,14 @@ class _ProductPage extends State<ProductPage> {
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    widget.menuItem.name,
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 30),
-                  ),
+                  Container(
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      child: Text(
+                        widget.menuItem.name,
+                        textAlign: TextAlign.left,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 30),
+                      )),
                   XPText(xp: widget.menuItem.xp),
                 ])),
         Container(
@@ -98,8 +102,8 @@ class _ProductPage extends State<ProductPage> {
             child: _controllerWrapper(
                 'Ingredients',
                 Container(
-                    padding: const EdgeInsets.only(left: 10.0, bottom: 70.0),
-                  ))));
+                  padding: const EdgeInsets.only(left: 10.0, bottom: 70.0),
+                ))));
   }
 
   @override
@@ -122,27 +126,32 @@ class _ProductPage extends State<ProductPage> {
                   flexibleSpace: FlexibleSpaceBar(
                     background: Hero(
                       tag: widget.menuItem.id + widget.collectionName + 'image',
-                      child: Image.asset(widget.menuItem.image),
+                      child: Image.network(widget.menuItem.image),
                     ),
                   ),
                 ),
                 SliverList(
                     delegate: SliverChildListDelegate([
-                  _infoSection(),
-                  _controllerWrapper(
-                      'Size option',
-                      SizeSelector(
-                          selection: selectedSize, callback: _onSelectSize)),
-                  _controllerWrapper(
-                      'Customization options',
-                      Column(
-                          children: customizationOptions.entries
-                              .map((e) => AmountSelector(
-                                  amount: e.value,
-                                  title: e.key,
-                                  callback: (updatedAmount) =>
-                                      _onUpdateAddons(e.key, updatedAmount)))
-                              .toList())),
+                  _infoSection(context),
+                  (widget.menuItem.properties['hasSizes'])
+                      ? _controllerWrapper(
+                          'Size option',
+                          SizeSelector(
+                              selection: selectedSize, callback: _onSelectSize))
+                      : SizedBox(),
+                  (widget.menuItem.properties['isDrink'])
+                      ? _controllerWrapper(
+                          'Customization options',
+                          Column(
+                              children: customizationOptions.entries
+                                  .map((e) => AmountSelector(
+                                      amount: e.value,
+                                      title: e.key,
+                                      callback: (updatedAmount) =>
+                                          _onUpdateAddons(
+                                              e.key, updatedAmount)))
+                                  .toList()))
+                      : SizedBox(),
                   _controllerWrapper('Additional notes',
                       NotesField(callback: (value) => notesText = value)),
                   _infoFooter()
@@ -153,7 +162,13 @@ class _ProductPage extends State<ProductPage> {
                 FloatingActionButtonLocation.centerFloat,
             floatingActionButton: FloatingActionButton.extended(
                 onPressed: () {
-                  model.addToCard(widget.menuItem);
+                  selectedItem = OrderItem(
+                      widget.menuItem,
+                      selectedSize,
+                      customizationOptions['Sugar'],
+                      customizationOptions['Cream'],
+                      notesText);
+                  model.addToCart(selectedItem);
                   Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => CheckoutPage()));
                 },

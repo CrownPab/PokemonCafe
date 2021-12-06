@@ -3,17 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:pokemon_cafe/account.dart';
 import 'package:pokemon_cafe/auth.dart';
 import 'package:pokemon_cafe/data/menu_item.dart';
+import 'package:pokemon_cafe/data/order_item.dart';
+import 'package:pokemon_cafe/data/notification.dart' as n;
+import 'package:pokemon_cafe/data/poki_api.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:pokemon_cafe/crud.dart' as crud;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:pokemon_cafe/data/poki_api.dart' as api;
 
 class ViewModel extends Model {
   String? id;
   Auth? auth;
   Account? currentAccount;
   Image? image; 
-  List<MenuItem> cart = [];
+  List<OrderItem> cart = [];
   ViewModel.initialize() {
     crud.initializeFirebase().then((value) {
       auth = Auth();
@@ -22,7 +26,7 @@ class ViewModel extends Model {
   }
   Function? onSignOut;
 
-  final Map<String, MenuItem> _allItems = {
+  final Map<String, OrderItem> _allItems = {
     // '000000': MenuItem(
     //     '000000',
     //     'PikaChino',
@@ -72,7 +76,7 @@ class ViewModel extends Model {
     //     100,
     //     <String>['Ice', 'Sweet Cream', 'Brewed Coffee', 'Classic Syrup']),
   };
-  Future<List<MenuItem>> searchMenu(String query) async {
+  Future<List<OrderItem>> searchMenu(String query) async {
     await Future.delayed(const Duration(seconds: 1));
     return [_allItems['000000']!];
   }
@@ -95,17 +99,49 @@ class ViewModel extends Model {
     return account;
   }
 
-  void addToCard(MenuItem item) {
+  Future<PokiStats> getPokemonStats(String name) async {
+    return await api.getStats(name);
+  }
+
+  void addToCart(OrderItem item) {
     cart.add(item);
   }
 
-  void deletefromCard(MenuItem item) {
+  void deletefromCart(OrderItem item) {
     cart.remove(item);
     notifyListeners();
   }
 
   void setImage(Image image){ 
     this.image = image; 
+    notifyListeners();}
+  void onCheckout(BuildContext context) {
+    cart.forEach((element) {
+      currentAccount!.currentXpAmount += element.menuItem.xp;
+      if (currentAccount!.currentXpAmount >= 100) {
+        currentAccount!.pokemonLevel += 1;
+        currentAccount!.currentXpAmount -= 100;
+        if (currentAccount!.pokemonLevel == 0) {
+          currentAccount!.badges['BoulderBadge'] = true;
+        }
+        if (currentAccount!.pokemonLevel == 1) {
+          currentAccount!.badges['CascadeBadge'] = true;
+        }
+        if (currentAccount!.pokemonLevel == 2) {
+          currentAccount!.badges['ThunderBadge'] = true;
+        }
+        if (currentAccount!.pokemonLevel == 3) {
+          currentAccount!.badges['VolcanoBadge'] = true;
+        }
+      }
+    });
+    crud.updateAccount(currentAccount!);
     notifyListeners();
+    try {
+      n.Notification notification = n.Notification(context);
+      notification.showScheduledNotification();
+    } catch (e) {
+      print(e);
+    }
   }
 }
