@@ -96,7 +96,7 @@ class _SignUpPage extends State<SignUpPage> {
               if (date != null) {
                 setState(() {
                   widget.account.birthday =
-                      "${date.day}-${date.month}-${date.year}";
+                      "${date.month}-${date.day}-${date.year}";
                 });
               }
             },
