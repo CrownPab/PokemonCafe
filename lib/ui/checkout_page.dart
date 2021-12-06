@@ -11,15 +11,14 @@ import 'package:scoped_model/scoped_model.dart';
 import 'home_page.dart';
 
 class CheckoutPage extends StatefulWidget {
-  const CheckoutPage({Key? key}) : super(key: key);
-
+  final Location? selectedStore;
+  CheckoutPage({this.selectedStore, Key? key}) : super(key: key);
   @override
   _CheckoutPage createState() => _CheckoutPage();
 }
 
 class _CheckoutPage extends State<CheckoutPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
-
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<ViewModel>(
@@ -145,7 +144,7 @@ class _CheckoutPage extends State<CheckoutPage> {
               Row(
                 children: <Widget>[
                   Text(
-                    "Winchester and Simcoe ~ 2.5 km",
+                    widget.selectedStore!.address.toString() + ", " + widget.selectedStore!.city.toString(),
                     style: CustomTextStyle.textStyleSemiBold,
                   ),
                 ],
