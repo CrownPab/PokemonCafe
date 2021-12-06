@@ -19,6 +19,8 @@ class _ProfilePage extends State<ProfilePage> {
     final List<Map> myProducts =
         List.generate(4, (index) => {"id": index, "name": "Product $index"})
             .toList();
+
+    var badgeList = ['Boulderbadge.webp', 'Cascadebadge.webp','Thunderbadge.webp','Volcanobadge.webp'];
     
     
     bool _isLoaded(ViewModel model) {
@@ -227,8 +229,8 @@ class _ProfilePage extends State<ProfilePage> {
                               itemBuilder: (BuildContext ctx, index) {
                                 return Container(
                                   alignment: Alignment.center,
-                                  child: Text(
-                                    account!.badges.toString(),
+                                  child: Image(
+                                     image: AssetImage(badgeList[index])
                                   ),
                                   decoration: BoxDecoration(
                                       color: Colors.transparent,
