@@ -107,5 +107,10 @@ class ViewModel extends Model {
   void onCheckout(BuildContext context) {
     n.Notification notification = n.Notification(context);
     notification.showScheduledNotification();
+
+    currentAccount!.currentXpAmount +=
+        cart.map((i) => i.menuItem.xp).toList().reduce((a, b) => a + b);
+
+    notifyListeners();
   }
 }

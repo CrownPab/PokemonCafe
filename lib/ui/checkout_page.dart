@@ -494,21 +494,21 @@ class _CheckoutPage extends State<CheckoutPage> {
               const SizedBox(
                 height: 8,
               ),
-              TextButton(
-                  style: TextButton.styleFrom(
-                    primary: Colors.white,
-                    backgroundColor: Colors.red[400],
-                    textStyle: const TextStyle(fontSize: 12),
-                  ),
-                  onPressed: () {
-                    // causes problems with bottom navigaton
-                    // Navigator.of(context).push(
-                    //     MaterialPageRoute(builder: (context) => HomePage()));
-                  },
-                  child: const Text("Add items")),
-              const SizedBox(
-                height: 8,
-              ),
+              // TextButton(
+              //     style: TextButton.styleFrom(
+              //       primary: Colors.white,
+              //       backgroundColor: Colors.red[400],
+              //       textStyle: const TextStyle(fontSize: 12),
+              //     ),
+              //     onPressed: () {
+              //       // causes problems with bottom navigaton
+              //       // Navigator.of(context).push(
+              //       //     MaterialPageRoute(builder: (context) => HomePage()));
+              //     },
+              //     child: const Text("Add items")),
+              // const SizedBox(
+              //   height: 8,
+              // ),
             ],
           ),
         ),
