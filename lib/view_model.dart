@@ -4,10 +4,12 @@ import 'package:pokemon_cafe/auth.dart';
 import 'package:pokemon_cafe/data/menu_item.dart';
 import 'package:pokemon_cafe/data/order_item.dart';
 import 'package:pokemon_cafe/data/notification.dart' as n;
+import 'package:pokemon_cafe/data/poki_api.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:pokemon_cafe/crud.dart' as crud;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:pokemon_cafe/data/poki_api.dart' as api;
 
 class ViewModel extends Model {
   String? id;
@@ -93,6 +95,10 @@ class ViewModel extends Model {
     await crud.createAccount(account);
     currentAccount = account;
     return account;
+  }
+
+  Future<PokiStats> getPokemonStats(String name) async {
+    return await api.getStats(name);
   }
 
   void addToCart(OrderItem item) {
