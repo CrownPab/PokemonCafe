@@ -57,6 +57,7 @@ class _LoginDelegate extends State<LoginDelegate> {
           );
         case AuthStatus.SIGNED_IN:
           model.onSignOut = _signedOut;
+          model.getAccount();
           return HomePage();
       }
     }

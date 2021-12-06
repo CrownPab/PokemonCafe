@@ -80,11 +80,9 @@ class ViewModel extends Model {
 
   Future<Account?> getAccount() async {
     if (auth != null) {
-      Account? account = await crud.getAccount("E09hPBjLbidu4gHF4KxH");
+      Account? account = await crud.getAccount(auth!.uid);
       currentAccount = account;
       return account;
-    } else {
-      return await crud.getAccount("E09hPBjLbidu4gHF4KxH");
     }
   }
 
