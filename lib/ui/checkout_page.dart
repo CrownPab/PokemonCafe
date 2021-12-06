@@ -144,6 +144,7 @@ class _CheckoutPage extends State<CheckoutPage> {
               Row(
                 children: <Widget>[
                   Text(
+                    widget.selectedStore == null? "5954 Hwy 7, Emerald City":
                     widget.selectedStore!.address.toString() + ", " + widget.selectedStore!.city.toString(),
                     style: CustomTextStyle.textStyleSemiBold,
                   ),
