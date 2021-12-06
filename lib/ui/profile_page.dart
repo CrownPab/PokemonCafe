@@ -22,6 +22,19 @@ class _ProfilePage extends State<ProfilePage> {
         List.generate(4, (index) => {"id": index, "name": "Product $index"})
             .toList();
 
+    var badgeList = [
+      'Boulderbadge.webp',
+      'Cascadebadge.webp',
+      'Thunderbadge.png',
+      'Volcanobadge.png'
+    ];
+    var firebaseBadge = [
+      'BoulderBadge',
+      'CascadeBadge',
+      'ThunderBadge',
+      'VolcanoBadge'
+    ];
+
     bool _isLoaded(ViewModel model) {
       if (account == null) {
         model.getAccount().then((value) {
@@ -76,6 +89,15 @@ class _ProfilePage extends State<ProfilePage> {
                     )
                   ]),
                   title: const Text('Profile Page'),
+                  actions: [
+                    IconButton(
+                        icon: const Icon(Icons.logout),
+                        color: Colors.white,
+                        onPressed: () {
+                          model.onSignOut!();
+                          Navigator.pop(context);
+                        }),
+                  ],
                 ),
                 body: !_isLoaded(model)
                     ? const Center(child: CircularProgressIndicator())
@@ -263,12 +285,16 @@ class _ProfilePage extends State<ProfilePage> {
                                       childAspectRatio: 3 / 2,
                                       crossAxisSpacing: 20,
                                       mainAxisSpacing: 20),
-                              itemCount: myProducts.length,
+                              itemCount: firebaseBadge.length,
                               itemBuilder: (BuildContext ctx, index) {
                                 return Container(
                                   alignment: Alignment.center,
-                                  child: Text(
-                                    account!.badges.toString(),
+                                  child: Image(
+                                    image: AssetImage(
+                                        'assets/images/${badgeList[index]}'),
+                                    color: account!.badges[firebaseBadge[index]]
+                                        ? null
+                                        : Colors.black,
                                   ),
                                   decoration: BoxDecoration(
                                       color: Colors.transparent,

@@ -47,6 +47,7 @@ class _LoginPage extends State<LoginPage> {
       try {
         if (_formMode == FormMode.SIGNIN) {
           String userId = await widget.auth.signIn(_email, _password);
+          model.getAccount();
           print('Signed in: $userId');
         } else {
           String userId = await widget.auth.signUp(_email, _password);
