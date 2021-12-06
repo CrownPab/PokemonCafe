@@ -38,7 +38,6 @@ class _MenuPage extends State<MenuPage> {
     } else {
       model.getAllMenuItems().then((value) => setState(() {
             allItems = value;
-            print(allItems!.length);
             menuSelection = {
               'Cold Drinks': allItems!
                   .where((element) =>
