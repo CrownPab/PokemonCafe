@@ -19,6 +19,8 @@ class _ProfilePage extends State<ProfilePage> {
     final List<Map> myProducts =
         List.generate(4, (index) => {"id": index, "name": "Product $index"})
             .toList();
+    
+    
     bool _isLoaded(ViewModel model) {
       if (account == null) {
         model.getAccount().then((value) {
@@ -36,6 +38,7 @@ class _ProfilePage extends State<ProfilePage> {
     }
 
     return ScopedModelDescendant<ViewModel>(
+      
         builder: (context, child, model) => DefaultTabController(
               length: 2,
               child: Scaffold(
@@ -67,10 +70,10 @@ class _ProfilePage extends State<ProfilePage> {
                                                 clipBehavior: Clip.none,
                                                 fit: StackFit.expand,
                                                 children: [
-                                                  const CircleAvatar(
+                                                   CircleAvatar(
                                                     radius: 140.0,
                                                     backgroundImage: NetworkImage(
-                                                        'https://pbs.twimg.com/profile_images/1465367903981772816/9RTbOQY2_400x400.jpg'),
+                                                        account!.profileImageUrl),
                                                   ),
                                                   Positioned(
                                                     bottom: 0,
@@ -96,9 +99,9 @@ class _ProfilePage extends State<ProfilePage> {
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Row(
-                                            children: const [
+                                            children: [
                                               Text(
-                                                "12",
+                                                account!.pokemonLevel.toString(),
                                                 style: TextStyle(
                                                   color: Colors.black,
                                                 ),
@@ -110,7 +113,7 @@ class _ProfilePage extends State<ProfilePage> {
                                                 height: 25.0,
                                                 width: 325.0,
                                                 child: LinearProgressIndicator(
-                                                  value: 0.3,
+                                                  value: account!.currentXpAmount / 100,
                                                   valueColor:
                                                       AlwaysStoppedAnimation(
                                                           Colors.blue),
@@ -138,7 +141,7 @@ class _ProfilePage extends State<ProfilePage> {
                                     ),
                                     const SizedBox(height: 12.0),
                                     Text(
-                                      "Preferred Store: 1365 Wilson Rd N",
+                                      "Preferred Store: ${account!.preferredStore}",
                                       style: TextStyle(
                                           color: Colors.grey[800],
                                           fontWeight: FontWeight.w900,
@@ -148,7 +151,7 @@ class _ProfilePage extends State<ProfilePage> {
                                     ),
                                     const SizedBox(height: 12.0),
                                     Text(
-                                      "Favourite Item: Pokechino",
+                                      "Favourite Drink: ${account!.favDrink}",
                                       style: TextStyle(
                                           color: Colors.grey[800],
                                           fontWeight: FontWeight.w900,
@@ -158,7 +161,7 @@ class _ProfilePage extends State<ProfilePage> {
                                     ),
                                     const SizedBox(height: 12.0),
                                     Text(
-                                      "Birthday: May 10th 1999",
+                                      "Favourite Food: ${account!.favFood}",
                                       style: TextStyle(
                                           color: Colors.grey[800],
                                           fontWeight: FontWeight.w900,
@@ -168,7 +171,7 @@ class _ProfilePage extends State<ProfilePage> {
                                     ),
                                     const SizedBox(height: 12.0),
                                     Text(
-                                      "Gender: Male",
+                                      "Birthday: ${account!.birthday}",
                                       style: TextStyle(
                                           color: Colors.grey[800],
                                           fontWeight: FontWeight.w900,
@@ -178,7 +181,7 @@ class _ProfilePage extends State<ProfilePage> {
                                     ),
                                     const SizedBox(height: 12.0),
                                     Text(
-                                      "Email: GaganPabla377@gmail.com",
+                                      "Email: ${account!.email}",
                                       style: TextStyle(
                                           color: Colors.grey[800],
                                           fontWeight: FontWeight.w900,
@@ -186,18 +189,34 @@ class _ProfilePage extends State<ProfilePage> {
                                           fontFamily: 'Open Sans',
                                           fontSize: 20),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: ElevatedButton(
-                                          onPressed: () {},
-                                          child: const Text('Change Password')),
-                                    )
+                                    const SizedBox(height: 12.0),
+                                     Text(
+                                      "First Name: ${account!.firstName}",
+                                      style: TextStyle(
+                                          color: Colors.grey[800],
+                                          fontWeight: FontWeight.w900,
+                                          fontStyle: FontStyle.italic,
+                                          fontFamily: 'Open Sans',
+                                          fontSize: 20),
+                                    ),
+                                    const SizedBox(height: 12.0),
+                                    Text(
+                                      "Last Name: ${account!.lastName}",
+                                      style: TextStyle(
+                                          color: Colors.grey[800],
+                                          fontWeight: FontWeight.w900,
+                                          fontStyle: FontStyle.italic,
+                                          fontFamily: 'Open Sans',
+                                          fontSize: 20),
+                                    ),
                                   ],
                                 ),
                               )
                             ],
                           ),
+                          
                           GridView.builder(
+                            
                               gridDelegate:
                                   const SliverGridDelegateWithMaxCrossAxisExtent(
                                       maxCrossAxisExtent: 200,
@@ -208,9 +227,8 @@ class _ProfilePage extends State<ProfilePage> {
                               itemBuilder: (BuildContext ctx, index) {
                                 return Container(
                                   alignment: Alignment.center,
-                                  child: const Image(
-                                    image: AssetImage(
-                                        'assets/images/Boulderbadge.webp'),
+                                  child: Text(
+                                    account!.badges.toString(),
                                   ),
                                   decoration: BoxDecoration(
                                       color: Colors.transparent,

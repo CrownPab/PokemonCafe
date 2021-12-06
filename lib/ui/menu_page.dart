@@ -12,6 +12,7 @@ class MenuPage extends StatefulWidget {
 
 class _MenuPage extends State<MenuPage> {
   Map<String, List<MenuItem>>? menuSelection;
+  List<MenuItem>? allItems;
   double scrollDepth = 0;
 
   Widget _menuLoader(ViewModel model) {
@@ -35,9 +36,25 @@ class _MenuPage extends State<MenuPage> {
         },
       ));
     } else {
-      model
-          .getAllMenuItems()
-          .then((value) => setState(() => menuSelection = value));
+      model.getAllMenuItems().then((value) => setState(() {
+            allItems = value;
+            print(allItems!.length);
+            menuSelection = {
+              'Cold Drinks': allItems!
+                  .where((element) =>
+                      element.properties['Temperature'] == 'Cold' &&
+                      element.properties['isDrink'])
+                  .toList(),
+              'Hot Drinks': allItems!
+                  .where((element) =>
+                      element.properties['Temperature'] == 'Hot' &&
+                      element.properties['isDrink'])
+                  .toList(),
+              'Goodies': allItems!
+                  .where((element) => !element.properties['isDrink'])
+                  .toList(),
+            };
+          }));
       return const Center(
         child: CircularProgressIndicator(),
       );
