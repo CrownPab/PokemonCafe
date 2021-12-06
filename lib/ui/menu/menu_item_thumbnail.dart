@@ -29,10 +29,13 @@ class MenuItemThumbnail extends StatelessWidget {
                   shape: BoxShape.circle, color: Colors.red),
             ),
             const SizedBox(height: 2.0),
-            Text(
-              item.name,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 12.0),
+            Container(
+              child: Text(
+                item.name,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 12.0),
+              ),
+              width: 100,
             )
           ]),
         ));
