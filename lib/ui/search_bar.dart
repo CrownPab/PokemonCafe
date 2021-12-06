@@ -61,7 +61,7 @@ class _SearchBar extends State<SearchBar> with SingleTickerProviderStateMixin {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
               child: Text(
                 'Pokemon Cafe',
                 style: TextStyle(
@@ -73,7 +73,7 @@ class _SearchBar extends State<SearchBar> with SingleTickerProviderStateMixin {
                         .value)),
               ),
             ),
-            IconButton(
+           /*IconButton(
                 icon: const Icon(
                   Icons.search,
                 ),
@@ -85,6 +85,7 @@ class _SearchBar extends State<SearchBar> with SingleTickerProviderStateMixin {
                     FocusScope.of(context).requestFocus(keyboardFocus);
                   }
                 })
+          */
           ],
         ),
         Positioned(
