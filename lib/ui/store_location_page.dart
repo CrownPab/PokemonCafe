@@ -27,14 +27,22 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<Location> latLonList = [
-    Location("5954 Hwy 7", "Emerald City", LatLng(43.8739833, -79.337021)),
-    Location("600 Highway 7", "Saffron City",
-        LatLng(43.845703125, -79.38105010986328)),
+    Location("5954 Hwy 7", "Emerald City", LatLng(43.8739833, -79.337021),
+        "assets/images/Emerald_City.jpg"),
     Location(
-        "3740 Midland Ave", "Lavender Town", LatLng(43.816033, -79.293668)),
-    Location("209 Victoria St", "Vermilion City",
-        LatLng(43.654884338378906, -79.37899780273438)),
-    Location("1365 Wilson Rd N", "Pewter City", LatLng(43.939078, -78.8598354))
+        "600 Highway 7",
+        "Saffron City",
+        LatLng(43.845703125, -79.38105010986328),
+        "assets/images/Saffron_City.jpg"),
+    Location("3740 Midland Ave", "Lavender Town", LatLng(43.816033, -79.293668),
+        "assets/images/Lavender_Town.jpg"),
+    Location(
+        "209 Victoria St",
+        "Vermilion City",
+        LatLng(43.654884338378906, -79.37899780273438),
+        "assets/images/Vermilion_City.jpg"),
+    Location("1365 Wilson Rd N", "Pewter City", LatLng(43.939078, -78.8598354),
+        "assets/images/Pewter_City.jpg")
   ];
 
   @override
@@ -42,14 +50,6 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(title: const Text("Select a store")),
       body: ScaffoldBodyContent(latLonList),
-      /*
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          setState(() {});
-        },
-        child: Icon(Icons.add),
-      ),
-      */
     );
   }
 }
@@ -58,8 +58,9 @@ class Location {
   String? address;
   String? city;
   LatLng? latLong;
+  String? imagePath;
 
-  Location(this.address, this.city, this.latLong);
+  Location(this.address, this.city, this.latLong, this.imagePath);
 }
 
 class ScaffoldBodyContent extends StatefulWidget {
@@ -119,30 +120,43 @@ class _ScaffoldBodyContentState extends State<ScaffoldBodyContent> {
             return IconButton(
               onPressed: () {
                 print("PIN CLICKED!");
+                setState(() {
+                  setCurrentLocation();
+                });
                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          topRight: Radius.circular(30))),
                   content: Container(
-                      height: 70,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            list[i].city.toString(),
-                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                          Text(list[i].address.toString()),
-                          Text(calculateDistance(
-                                      center.latitude,
-                                      center.longitude,
-                                      list[i].latLong!.latitude,
-                                      list[i].latLong!.longitude)
-                                  .toStringAsFixed(1) +
-                              " km")
-                        ],
-                      )),
+                      height: 75,
+                      child: Row(children: [
+                        Image.asset(list[i].imagePath!,
+                            width: 75, height: 75),
+                        const SizedBox(
+                          width: 15,
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              list[i].city.toString(),
+                              style: const TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                            Text(list[i].address.toString()),
+                            Text(calculateDistance(
+                                        center.latitude,
+                                        center.longitude,
+                                        list[i].latLong!.latitude,
+                                        list[i].latLong!.longitude)
+                                    .toStringAsFixed(1) +
+                                " km"),
+                          ],
+                        ),
+                      ])),
                   duration: const Duration(days: 1),
                   backgroundColor: Colors.red,
                   action: SnackBarAction(
@@ -151,7 +165,8 @@ class _ScaffoldBodyContentState extends State<ScaffoldBodyContent> {
                       print('Action is clicked');
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const CheckoutPage()),
+                        MaterialPageRoute(
+                            builder: (context) => const CheckoutPage()),
                       );
                     },
                     textColor: Colors.white,

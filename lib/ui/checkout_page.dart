@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pokemon_cafe/data/menu_item.dart';
 import 'package:pokemon_cafe/ui/menu_page.dart';
 import 'package:pokemon_cafe/ui/shared/xp_text.dart';
+import 'package:pokemon_cafe/ui/store_location_page.dart';
 import 'package:pokemon_cafe/view_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
